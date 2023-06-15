@@ -1,0 +1,67 @@
+{% extends 'base3.html' %}
+
+{% block conteudo %}
+
+
+<div class="form-box">      
+    <h3>Cadastro de Dispositivo</h3>
+    Informe o ID do seu novo dispositivo
+
+    <div class="select-icon-label">
+        <label style="display: block">Icone</label>
+    </div>
+
+    <div class="radio-grid">
+        <label for="radio1" class="select-icon">
+            <input type="radio" id="icon-0" name="radio-icon" value="0" checked/>
+            <span class="radio-image">
+                <img src="{{ url_for('static', filename='images/printer-icon-0.svg') }}" alt="Radio Button Image" />
+            </span>
+        </label>
+      
+        <label for="radio2" class="select-icon">
+            <input type="radio" id="icon-1" name="radio-icon" value="1"/>
+            <span class="radio-image">
+                <img src="{{ url_for('static', filename='images/printer-icon-1.svg') }}" alt="Radio Button Image" />
+            </span>
+        </label>
+      
+        <label for="radio3" class="select-icon">
+            <input type="radio" id="icon-3" name="radio-icon" value="2"/>
+            <span class="radio-image">
+                <img src="{{ url_for('static', filename='images/printer-icon-2.svg') }}" alt="Radio Button Image" />
+            </span>
+        </label>
+    </div>
+      
+    <form method="POST" onsubmit="gerarValor(event)">
+        {{ form.hidden_tag() }}
+        <div class="form-input">
+            {{ form.id.label(class="form-label")}}
+            {{ form.id(class="form-control") }}
+        </div>
+        <div class="form-input">
+            {{ form.name.label(class="form-label")}}
+            {{ form.name(class="form-control") }}
+        </div>
+        <div class="form-input">
+            {{ form.baud.label(class="form-label")}}
+            {{ form.baud(class="form-control") }}
+        </div>
+        <input type="hidden" name="campo" id="campo">
+        <div class="form-input extra-top-padding">
+            {{form.submit(class="btn btn-primary")}}
+        </div>
+    </form>
+</div>
+
+
+<script>
+
+function gerarValor(event) {
+    var radioValue = document.querySelector('input[name="radio-icon"]:checked').value;
+    document.getElementById("campo").value = radioValue;
+    }
+</script>
+
+{% endblock %}

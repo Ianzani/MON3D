@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        /* Styles for the slider thumb */
+        input[type="range"] {
+            -webkit-appearance: none; /* Remove the default OS styles */
+            appearance: none;
+            width: 500px;
+            height: 15px;
+            background: linear-gradient(to right, blue, yellow, orange, red, darkred);
+            outline: none;
+            cursor: pointer;
+        }
+
+        .slider-set-point::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 20px solid black;
+            cursor: pointer;
+            transform: translateY(-5px); /* Adjust the vertical position of the thumb */
+        }
+        
+        /* Styles for the thumb in Firefox */
+        .slider-set-point::-moz-range-thumb {
+            width: 0;
+            height: 0;
+            border-radius: 0;
+            border-top: transparent;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-bottom: 15px solid black;
+            cursor: pointer;
+            background: transparent;
+        }
+        
+        .slider-set-point::-webkit-slider-thumb {
+            /* Other styles */
+            transform: translateY(15px); /* Adjust the vertical position of the thumb */
+        }
+        
+        .slider-set-point::-moz-range-thumb {
+            /* Other styles */
+            transform: translateY(15px); /* Adjust the vertical position of the thumb */
+        }
+        
+        .slider-current::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 20px solid black;
+            cursor: pointer;
+            transform: translateY(-5px); /* Adjust the vertical position of the thumb */
+        }
+        
+        /* Styles for the thumb in Firefox */
+        .slider-current::-moz-range-thumb {
+            width: 0;
+            height: 0;
+            border-radius: 0;
+            border-bottom: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 15px solid black;
+            cursor: pointer;
+            background: transparent;
+        }
+        
+        .slider-current::-webkit-slider-thumb {
+            /* Other styles */
+            transform: translateY(-15px); /* Adjust the vertical position of the thumb */
+        }
+        
+        .slider-current::-moz-range-thumb {
+            /* Other styles */
+            transform: translateY(-15px); /* Adjust the vertical position of the thumb */
+        }
+
+        /* Additional styles to stack the sliders */
+        .slider-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slider-set-point {
+            margin-bottom: -5px;
+            border-radius: 12px 12px 0 0;
+        }
+        
+        .slider-current {
+            border-radius: 0 0 12px 12px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="slider-container">
+        <input type="range" class="slider-set-point">
+        <input type="range" class="slider-current">
+    </div>
+</body>
+</html>

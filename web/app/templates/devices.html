@@ -1,0 +1,33 @@
+{% extends 'base3.html' %}
+
+{% block conteudo %}
+
+<div class="device-list">
+    <form id="DeviceForm" action="/dashboard" method="post">
+        <input type="hidden" id="deviceId" name="deviceId" value="">
+        {% for device in devices %}
+        <button class="list-item" type="submit" onclick="setdeviceId('{{device.id}}')">
+            <div class="device-icon-container">
+                <img src="{{url_for('static', filename='images/squircle3.svg')}}">
+                <img class="device-icon" src="{{url_for('static', filename='images/printer-icon-'+device.to_dict()['icon']+'.svg')}}">
+            </div>
+            <h6 class="device-label">{{device.to_dict()['name']}}</h6>
+        </button>
+        {% endfor %}
+        <a class="list-item" href="{{ url_for('new_device') }}">
+            <div class="device-icon-container">
+                <img src="{{url_for('static', filename='images/squircle3.svg')}}">
+                <img class="device-icon small-icon" src="{{url_for('static', filename='images/new-printer.svg')}}">
+            </div>  
+        </a>
+    </form>
+</div>
+
+<script>
+    function setdeviceId(value) {
+        document.getElementById("deviceId").value = value;
+        document.getElementById("DeviceForm").submit();
+    }
+</script>
+
+{% endblock %}

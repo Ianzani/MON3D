@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Mon3D{% endblock %}
+
+{% block conteudo %}
+
+    <h1>Exemplo de Botão Flask</h1>
+    <form>
+        <input type="button" class="btn btn-primary" value="Executar Função" onclick="executarFuncao('cima')">
+    </form>
+    
+    <br><br>
+    <h2 class="display-8" id="parametroRecebido">Display 6</h2>
+
+    <br><br>
+
+
+
+    <div id="texto_atualizado"></div>
+
+    <script>
+        function executarFuncao(valor) {
+            $.ajax({
+                type: 'POST',
+                url: '/func',
+                data: {value : valor},
+            });
+        }
+
+      $(document).ready(function() {
+        const parametroElement = $('#parametroRecebido');
+
+        function fazerRequisicaoGET() {
+          $.get('/get-temp', function(data) {
+            const parametroRecebido = new URLSearchParams(data).get('temp');
+            parametroElement.text(`T = ${parametroRecebido}°C`);
+          }).fail(function(error) {
+            console.error('Erro ao fazer a requisição:', error);
+          });
+        }
+
+        // Executar a função inicialmente
+        fazerRequisicaoGET();
+
+        // Executar a função a cada 5 segundos (5000 milissegundos)
+        setInterval(fazerRequisicaoGET, 5000);
+      });
+    </script>
+
+
+
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'base2.html' %}
+
+{% block conteudo %}
+
+<div class="form-box">      
+    <h3>Cadastro de Usuário</h3>
+    Registre-se para acessar MON3D
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div class="form-input extra-top-padding">
+            {{ form.name.label(class="form-label")}}
+            {{ form.name(class="form-control") }}
+        </div>
+        <div class="form-input">
+            {{ form.email.label(class="form-label")}}
+            {{ form.email(class="form-control") }}        
+        </div>
+        <div class="form-input">
+            {{ form.password1.label(class="form-label")}}
+            {{ form.password1(class="form-control") }}              
+        </div>
+        <div class="form-input">
+            {{ form.password2.label(class="form-label")}}
+            {{ form.password2(class="form-control") }}
+            {% if form.password2.errors %}
+                {% for erro in form.password2.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{erro}}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="form-input extra-top-padding">
+            {{form.submit(class="btn btn-primary")}}
+        </div>
+    </form>
+</div>
+
+{% endblock %}

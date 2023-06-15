@@ -1,0 +1,28 @@
+{% extends 'base2.html' %}
+
+{% block conteudo %}
+
+    <div class="form-box">      
+        <h3>Entrar</h3>
+        Conecte-se para acessar seus dispositivos
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            <div class="form-input extra-top-padding">
+                {{ form.email.label(class="form-label")}}
+                {{ form.email(class="form-control") }}        
+            </div>
+            <div class="form-input">
+                {{ form.password.label(class="form-label") }}
+                {{ form.password(class="form-control") }}                
+            </div>
+            <div class="form-input extra-top-padding">
+                {{form.submit(class="btn btn-primary")}}
+            </div>
+        </form>
+        <div class="sing-up-entry">
+            <h6>Não tem uma conta?</h6>
+            <a href="{{ url_for('new_user') }}">Registrar-se</a>    
+        </div>
+    </div>
+
+{% endblock %}

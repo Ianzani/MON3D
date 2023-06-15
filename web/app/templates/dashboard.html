@@ -1,0 +1,416 @@
+{% extends 'base4.html' %}
+
+{% block conteudo %}
+
+<div class="dashboard-grid">
+    <div class="column"> <!-- COLUMN A -->
+
+        <div class="container open"> <!-- GERAL-->
+            <div class="title" onclick="toggleContainer(this)">
+                <h2>&#9650;</h2>
+                <h1>Geral</h1> 
+            </div>
+            <div class="content">
+                <div class="grid-general">
+                    <button class="control-button" id="connect" onclick="connect()">
+                        Conectar
+                    </button>
+                    <button class="control-button" id="disconnect" onclick="disconnect()">
+                        Desconectar
+                    </button>
+                    <div class="input-wrapper">
+                        <label>Status</label>
+                        <input type="text" class="text-entry" value="0" id="status" readonly>
+                    </div>
+                    <div class="input-wrapper" style="grid-column: 1 / span 3;">
+                        <form id="gcodeForm" action="/personalized" method="POST">
+                            <label>G-Code Customizado</label>
+                            <input type="text" class="text-entry" id="command" placeholder="Exemplo: G0">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container open"> <!-- TEMPERATURA-->
+            <div class="title" onclick="toggleContainer(this)">
+                <h2>&#9650;</h2>
+                <h1>Temperatura</h1>
+                
+            </div>
+            <div class="content">
+                <div class="grid-5x3">
+                    <!-- EXTRUSORA -->
+                    <div>
+                        &nbsp;
+                        <h4>Extrusora:</h4>
+                    </div>
+                    <div class="input-wrapper">
+                        <label>Referência (&#x25BC;)</label>
+                        <input type="text" class="text-entry-temp" value="0" id="text-input-1">
+                        <span class="unit">°C</span>
+                    </div>
+                    <div class="input-wrapper">
+                        <label>Leitura (&#x25B2;)</label>
+                        <input type="text" class="text-entry-temp" value="0" id="text-input-2" readonly>
+                        <span class="unit">°C</span>
+                    </div>
+                    <div class="slider-container">
+                        <input type="range" class="slider-temp set-point" min="0" max="300" value="0" step="1" data-target="text-input-1" disabled>
+                        <input type="range" class="slider-temp current" min="0" max="300" value="25" step="1" data-target="text-input-2" disabled>
+                    </div>
+                    
+                    <div>&nbsp;</div>
+                    <div>&nbsp;</div>
+                    <div>&nbsp;</div>
+
+                    <!-- MESA AQUECIDA -->
+                    <div>
+                        &nbsp;
+                        <h4>Mesa Aquecida:</h4>
+                    </div>
+                    <div class="input-wrapper">
+                        <label>Referência (&#x25BC;)</label>
+                        <input type="text" class="text-entry-temp" value="0" id="text-input-3">
+                        <span class="unit">°C</span>
+                    </div>
+                    <div class="input-wrapper">
+                        <label>Leitura (&#x25B2;)</label>
+                        <input type="text" class="text-entry-temp" value="25" id="text-input-4" readonly>
+                        <span class="unit">°C</span>
+                    </div>
+                    <div class="slider-container">
+                        <input type="range" class="slider-temp set-point" min="0" max="300" data-target="text-input-3" disabled>
+                        <input type="range" class="slider-temp current" min="0" max="300" data-target="text-input-4" disabled>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button onclick="updateAllSliderValues()">temp</button>    
+    
+    </div>
+
+    <div class="column"> <!-- COLUMN B -->
+
+        <div class="container open"> <!-- MOVIMENTO-->
+            <div class="title" onclick="toggleContainer(this)">
+                <h2>&#9650;</h2>
+                <h1>Movimento</h1> 
+            </div>
+            <div class="content">
+                <div class="grid-3x1">
+                    <div class="cell">
+                        <button class="control-button dir button-up" id="button-add-z" onclick="position('Z', getMovementStep())"></button>
+                    </div>
+                    <div class="cell with-label">Z</div>
+                    <div class="cell">
+                        <button class="control-button dir button-down" onclick="position('Z-', getMovementStep())" id="button-sub-z"></button>
+                    </div>
+                </div>
+                <div class="grid-3x3">
+                    <div class="cell"></div>
+                    <div class="cell">
+                        <button class="control-button dir button-up" id="button-add-y" onclick="position('Y', getMovementStep())"></button>
+                    </div>
+                    <div class="cell"></div>
+                    <div class="cell">
+                        <button class="control-button dir button-left" id="button-sub-x" onclick="position('X-', getMovementStep())"></button>
+                    </div>
+                    <div class="cell with-label">XY</div>
+                    <div class="cell">
+                        <button class="control-button dir button-right" id="button-add-x" onclick="position('X', getMovementStep())"></button>
+                    </div>
+                    <div class="cell"></div>
+                    <div class="cell">
+                        <button class="control-button dir button-down" id="button-sub-y" onclick="position('Y-', getMovementStep())"></button>
+                    </div>
+                    <div class="cell"></div>
+                </div>
+            </div>
+            <div class="content">
+                <div class="segmented-button">
+                    <input type="radio" id="option1" name="mov-step" value="0.1">
+                    <label for="option1">0.1</label>
+                    
+                    <input type="radio" id="option2" name="mov-step" value="1.0">
+                    <label for="option2">1</label>
+        
+                    <input type="radio" id="option3" name="mov-step" value="10.0" checked>
+                    <label for="option3">10</label>
+
+                    <input type="radio" id="option4" name="mov-step" value="100.0">
+                    <label for="option4">100</label>
+                </div>
+            </div>
+            <!-- <button onclick="getMovementStep()">Get Value</button> -->
+        </div>
+
+        <div class="container open"> <!-- PRINT-->
+            <div class="title" onclick="toggleContainer(this)">
+                <h2>&#9650;</h2>
+                <h1>Impressão</h1> 
+            </div>
+            <div class="content">
+
+
+                <div class="grid-print-flow">
+                    <div class="cell">
+                        <button class="control-button" id="start" onclick="start()">
+                            <img src="{{url_for('static', filename='images/start.svg')}}">
+                        </button>    
+                    </div>
+                    <div class="cell">
+                        <button class="control-button" id="pause" onclick="pause()">
+                            <img src="{{url_for('static', filename='images/pause.svg')}}">
+                        </button>    
+                    </div>
+                    <div class="cell">
+                        <button class="control-button" id="stop" onclick="stop()">
+                            <img src="{{url_for('static', filename='images/stop.svg')}}">
+                        </button>    
+                    </div>
+
+                    <div class="cell">
+                        <form id="fileUpload" method="POST" action="/upload" enctype="multipart/form-data">
+                            <input type="file" name="arquivo" class="form-control">
+                            <button type="submit" class="control-button">Enviar</button>
+                        </form>  
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="column"> <!-- COLUMN C-->
+
+        <div class="container"> <!-- VIDEO -->
+            <div class="title" onclick="toggleContainer(this)">
+                <h2>&#9650;</h2>
+                <h1>Vídeo</h1> 
+            </div>
+            <div class="content">
+                <video class="stream" id="video" muted nocontrols autoplay playsinline></video>
+                <script src="https://cdn.jsdelivr.net/npm/hls.js@1.4.3"></script>
+
+            </div>
+        </div>
+        
+    </div>
+
+</div>
+
+<script>
+
+//TEMPERATURE MANAGER
+const sliders = document.querySelectorAll(".slider-temp");
+const textInputs = document.querySelectorAll(".text-entry-temp");
+
+textInputs.forEach(function(textInput) {
+    textInput.addEventListener("input", function() {
+    const value = textInput.value;
+    const targetId = textInput.id;
+    updateSliderValue(value, targetId);
+    });
+});
+
+function updateSliderValue(value, targetId) {
+    const slider = document.querySelector(`[data-target="${targetId}"]`);
+
+    if (slider) {
+        slider.value = value;
+    }
+}
+
+function updateAllSliderValues() {
+    textInputs.forEach(function(textInput) {
+    const value = textInput.value;
+    const targetId = textInput.id;
+    updateSliderValue(value, targetId);
+    });
+}
+
+
+//TEXT INPUT TEMPERATURE
+const numberInputs = document.querySelectorAll('.text-entry-temp[type="text"]');
+
+numberInputs.forEach(function(numberInput) {
+  numberInput.addEventListener("input", function() {
+    // Remove any non-digit characters from the input value
+    numberInput.value = numberInput.value.replace(/\D/g, '');
+  });
+});
+
+// Retractable Container Function
+function toggleContainer(title) {
+    const container = title.parentNode;
+    container.classList.toggle('open');
+
+    $.ajax({
+          type: 'GET', // Método HTTP (pode ser POST ou GET, dependendo do seu caso)
+          url: '/toggle-streaming', // URL para onde enviar os dados
+        });
+}
+
+// Movement base radio buttons
+function getMovementStep() {
+    const radioButtons = document.getElementsByName("mov-step");
+    for (let i = 0; i < radioButtons.length; i++) {
+        if (radioButtons[i].checked) {
+            const selectedValue = radioButtons[i].value;
+            return selectedValue;
+            // console.log("Selected value: " + selectedValue);
+            // break;
+        }
+    }
+}
+
+
+// Video Streaming
+const create = () => {
+
+    var videoIndex = 'http://igbt.eesc.usp.br:8888/123/index.m3u8'
+		
+    const video = document.getElementById('video');
+
+	// always prefer hls.js over native HLS.
+	// this is because some Android versions support native HLS
+	// but don't support fMP4s.
+	if (Hls.isSupported()) {
+		const hls = new Hls({
+			maxLiveSyncPlaybackRate: 1.5,
+		});
+
+		hls.on(Hls.Events.ERROR, (evt, data) => {
+			if (data.fatal) {
+				hls.destroy();
+
+				setTimeout(create, 2000);
+			}
+		});
+
+		hls.loadSource(videoIndex);
+		hls.attachMedia(video);
+
+		video.play();
+
+	} else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+		// since it's not possible to detect timeout errors in iOS,
+		// wait for the playlist to be available before starting the stream
+		fetch(videoIndex)
+			.then(() => {
+				video.src = videoIndex;
+				video.play();
+			});
+	}
+};
+
+window.addEventListener('DOMContentLoaded', create);
+
+// ALTERAÇÕES ============================================================================
+$(document).ready(function() {
+      $('#fileUpload').submit(function(e) {
+        e.preventDefault(); // Impede o envio padrão do formulário
+        
+        var file = new FormData(this);
+        
+        $.ajax({
+          type: 'POST', // Método HTTP (pode ser POST ou GET, dependendo do seu caso)
+          url: '/upload', // URL para onde enviar os dados
+          data: file,
+          processData: false,
+          contentType: false,
+        });
+      });
+    });
+
+    $(document).ready(function() {
+      const disp_temp_ex = $('#text-input-2');
+      const disp_temp_bed = $('#text-input-4');
+      let delay = 5000;
+
+      function fazerRequisicaoGET() {
+
+        $.get('/get-temp', function(data) {
+          const temp_ex = new URLSearchParams(data).get('temp_ex');
+          const temp_bed = new URLSearchParams(data).get('temp_bed');
+          const newDelay = parseInt(new URLSearchParams(data).get('delay'));
+          disp_temp_ex.val(`${temp_ex}`);
+          disp_temp_bed.val(`${temp_bed}`);
+          delay = newDelay
+
+          updateAllSliderValues();
+
+        }).fail(function(error) {
+          console.error('Erro ao fazer a requisição:', error);
+        }).always(function() {
+            setTimeout(fazerRequisicaoGET, delay);
+        });
+      }
+      // Executar a função inicialmente
+      fazerRequisicaoGET();
+      setTimeout(function(){
+        updateAllSliderValues();  
+      }, 100);
+      
+    });
+
+
+    function position(value, step) {
+      $.ajax({
+      type: 'POST',
+      url: '/position',
+      data: {value : value, step : step},
+      });
+    }
+
+    function start() {
+      $.ajax({
+      type: 'GET',
+      url: '/start',
+      });
+    }
+    function connect() {
+      $.ajax({
+      type: 'GET',
+      url: '/connect',
+      });
+    }
+    function disconnect() {
+      $.ajax({
+      type: 'GET',
+      url: '/disconnect',
+      });
+    }
+    function pause() {
+      $.ajax({
+      type: 'GET',
+      url: '/pause',
+      });
+    }
+    function stop() {
+      $.ajax({
+      type: 'GET',
+      url: '/stop',
+      });
+    }
+
+    $(document).ready(function() {
+      $('#gcodeForm').submit(function(e) {
+        e.preventDefault(); // Impede o envio padrão do formulário
+        
+        var gCodeValue = $('#command').val(); // Obtém o valor do campo gCode
+        
+        $.ajax({
+          type: 'POST', // Método HTTP (pode ser POST ou GET, dependendo do seu caso)
+          url: $(this).attr('action'), // URL para onde enviar os dados
+          data: { gCode: gCodeValue }, // Envia apenas o valor do campo gCode
+        });
+      });
+    });
+
+</script>
+
+{% endblock %}

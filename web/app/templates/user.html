@@ -1,0 +1,44 @@
+{% extends 'base2.html' %}
+
+{% block conteudo %}
+
+<div class="form-box">      
+    <form method="POST">
+        {{ form_pass.hidden_tag() }}
+        {{ form_name.hidden_tag() }}
+        <div class="form-input extra-top-padding">
+            <label>Email</label>
+            <input class="form-control" type="text" value="{{ email }}" disabled readonly>
+        </div>
+        <div class="form-input">
+            {{ form_name.name.label(class="form-label")}}
+            {{ form_name.name(class="form-control", value=name) }}        
+        </div>
+        <div class="form-input">
+            {{ form_pass.old_password.label(class="form-label")}}
+            {{ form_pass.old_password(class="form-control") }}        
+        </div>
+        <div class="form-input">
+            {{ form_pass.new_password.label(class="form-label") }}
+            {{ form_pass.new_password(class="form-control") }}                
+        </div>
+        <div class="form-input">
+            {{ form_pass.new_password2.label(class="form-label") }}
+            {{ form_pass.new_password2(class="form-control") }}
+            {% if form_pass.new_password2.errors %}
+                {% for erro in form_pass.new_password2.errors %}
+                    {% if erro == 'As senhas devem ser iguais.' %}
+                    <div class="alert alert-danger" role="alert">
+                        {{erro}}
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}                
+        </div>
+        <div class="form-input extra-top-padding">
+            {{form_pass.submit(class="btn btn-primary")}}
+        </div>
+    </form>
+</div>
+
+{% endblock %}
