@@ -1,7 +1,7 @@
 <!-- Versão Nova -->
 
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="{{url_for('static', filename='css/main.min.css')}}">
@@ -26,7 +26,49 @@
 
 </head>
 <body>
+
     <nav class="navbar">
+        <a class="navbar-logo" href="{{url_for('home')}}" >   
+            <img src="{{url_for('static', filename='images/MON3D.svg')}}">
+        </a>
+        <ul class="navbar-item-list-container">
+            {% if current_user.is_authenticated %}
+
+            <li>
+                <a class="navbar-item" href="{{ url_for('devices') }}">
+                    Dispositivos
+                </a>
+            </li>
+            <li>
+                <a class="user-display" href="{{ url_for('user') }}"> 
+                    <div class="user-name">
+                        {{ current_user.name }}
+                    </div>
+                    <img class="user-icon" src="{{url_for('static', filename='images/blank-user-icon.svg')}}">
+                </a>
+            </li>
+            <li>
+                <a class="exit-display" href="{{ url_for('logout') }}">
+                    <img class="exit-icon" src="{{url_for('static', filename='images/exit-icon.svg')}}">
+                </a>
+            </li>
+            {% else %}
+            <li>
+                <a class="navbar-item" href="{{ url_for('login')}}">
+                    Entrar
+                </a>
+            </li>
+            <li>
+                <a class="navbar-item" href="{{ url_for('new_user') }}">
+                    Registrar-se
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    
+
+    <!-- <nav class="navbar">
         <a class="navbar-logo" href="{{url_for('home')}}" >   
             <img src="{{url_for('static', filename='images/MON3D.svg')}}">
         </a>
@@ -62,13 +104,13 @@
             </li>
             {% endif %}
         </ul>
-    </nav>
+    </nav> -->
 
     <div style="display: flex; flex-direction: column; align-items: center;">
 
         {% for message in get_flashed_messages() %}
-        <div class="container">
-            <div class="alert alert-primary alert-dismissible fade show" role="alert">
+        <div style="width: 100%; background-color: transparent; border: 0; margin: 10px 0 -25px 0; height: max-content; padding: 0; display: flex; justify-content: center; align-items: center;">
+            <div class="alert alert-primary alert-dismissible fade show" style="width: 50vw; display: flex; flex-direction: column; align-items: center;" role="alert">
                 {{message}}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>

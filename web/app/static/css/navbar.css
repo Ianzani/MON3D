@@ -49,7 +49,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100%;
     font-weight: 400;
     font-size: 14pt;
     color:white;
@@ -57,13 +56,29 @@
     text-decoration: none;
 }
 
+.navbar-item-list-container {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    margin-left: auto;
+}
+
 .exit-icon {
-    margin: 0 10px 0 0;
-    padding: 0;
     height: 35px;
+    margin-right: 10px;
 }
 
 .user-icon {
-    margin: 0 0 0 10px;
+    margin-left: 10px;
     height: 45px;
+}
+
+.user-icon-big {
+    margin: 20px 0 2px 0;
+    width: 150px;
+    aspect-ratio: 1/1;
+}
+
+.user-name-display {
+    margin: 0 0 -20px 0;
 }

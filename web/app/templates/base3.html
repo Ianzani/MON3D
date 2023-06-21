@@ -1,7 +1,7 @@
 <!-- Versão Nova -->
 
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="{{url_for('static', filename='css/main.min.css')}}">
@@ -15,7 +15,6 @@
             margin: 0;
             padding: 0;
             background-color: rgb(230, 230, 236);
-        
             justify-content: center;
             align-items: center;
         }
@@ -32,17 +31,16 @@
         <a class="navbar-logo" href="{{url_for('home')}}" >   
             <img src="{{url_for('static', filename='images/MON3D.svg')}}">
         </a>
-        <ul>
+        <ul class="navbar-item-list-container">
             {% if current_user.is_authenticated %}
             <li>
-                <a class="user-display"  href="{{ url_for('user') }}"> 
+                <a class="user-display" href="{{ url_for('user') }}"> 
                     {{ current_user.name }}
                     <img class="user-icon" src="{{url_for('static', filename='images/blank-user-icon.svg')}}">
                 </a>
             </li>
             <li>
-                <a class="exit-display"  href="{{ url_for('logout') }}">
-                    &nbsp;
+                <a class="exit-display" href="{{ url_for('logout') }}">
                     <img class="exit-icon" src="{{url_for('static', filename='images/exit-icon.svg')}}">
                 </a>
             </li>
@@ -60,7 +58,8 @@
             {% endif %}
         </ul>
     </nav>
-
+    
+    {% if current_user.is_authenticated %}
     <nav class="navbar secondary">
         <ul>
             <li>
@@ -70,14 +69,15 @@
             </li>
         </ul>
     </nav>
+    {% endif %}
 
     <br/>
     
     <div style="display: flex; flex-direction: column; align-items: center;">
 
         {% for message in get_flashed_messages() %}
-        <div class="container">
-            <div class="alert alert-primary alert-dismissible fade show" role="alert">
+        <div style="width: 100%; background-color: transparent; border: 0; margin: -15px 0 0 0; height: max-content; padding: 0; display: flex; justify-content: center; align-items: center;">
+            <div class="alert alert-primary alert-dismissible fade show" style="width: 50vw; display: flex; flex-direction: column; align-items: center;" role="alert">
                 {{message}}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>

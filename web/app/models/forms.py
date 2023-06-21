@@ -2,6 +2,20 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, EmailField, PasswordField, BooleanField, ValidationError, SelectField
 from wtforms.validators import DataRequired, EqualTo, Length
 
+baudrate_choices = [
+    9600,
+    19200,
+    38400,
+    57600,
+    74880,
+    115200,
+    230400,
+    250000,
+    500000,
+    750000,
+    1000000
+]
+
 class RegisterForm(FlaskForm):
     name = StringField("Nome", validators=[DataRequired(), Length(max=25)])
     email = EmailField("Email", validators=[DataRequired()])
@@ -18,9 +32,9 @@ class LoginForm(FlaskForm):
 
 class NewDeviceForm(FlaskForm):
     id = StringField("ID", validators=[DataRequired()])
-    name = StringField("Nome", validators=[DataRequired(), Length(max=15)])
+    name = StringField("Nome", validators=[DataRequired(), Length(max=16)])
     baud = SelectField("Taxa de transmissão (bps)", validators=[DataRequired()], 
-                       choices=['9600', '19200', '250000'], coerce=int)
+                       choices=baudrate_choices, coerce=int)
     submit = SubmitField("Adicionar")
 
 class UserFormPassword(FlaskForm):
@@ -35,3 +49,12 @@ class UserFormPassword(FlaskForm):
 
 class UserFormName(FlaskForm):
     name = StringField("Nome", validators=[DataRequired(), Length(max=25)])
+
+class SettingsForm(FlaskForm):
+    new_name = StringField("Nome do Dispositivo", validators=[DataRequired(), Length(max=16)])
+    baudrate = SelectField("Taxa de transmissão (bps)", validators=[DataRequired()], 
+                       choices=baudrate_choices, coerce=int)
+    delete = StringField("", validators=[DataRequired()])
+
+    submit = SubmitField("Salvar")
+

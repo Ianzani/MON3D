@@ -3,6 +3,9 @@
 {% block conteudo %}
 
 <div class="dashboard-grid">
+    mobile
+  
+
     <div class="column"> <!-- COLUMN A -->
 
         <div class="container open"> <!-- GERAL-->
@@ -39,20 +42,26 @@
                 
             </div>
             <div class="content">
+                
                 <div class="grid-5x3">
                     <!-- EXTRUSORA -->
-                    <div>
-                        &nbsp;
+                    <div class="temperature-env">
                         <h4>Extrusora:</h4>
+                    </div>
+                
+                    <div class="input-wrapper">
+                        <label>Definir Referência:</label>
+                        <input type="text" class="text-entry-temp" id="text-input-1" placeholder="Ex: 100">
+                        <span class="unit">°C</span>
                     </div>
                     <div class="input-wrapper">
                         <label>Referência (&#x25BC;)</label>
-                        <input type="text" class="text-entry-temp" value="0" id="text-input-1">
+                        <input type="text" class="text-display-temp" value="0" id="text-input-1" readonly>
                         <span class="unit">°C</span>
                     </div>
                     <div class="input-wrapper">
                         <label>Leitura (&#x25B2;)</label>
-                        <input type="text" class="text-entry-temp" value="0" id="text-input-2" readonly>
+                        <input type="text" class="text-display-temp" value="0" id="text-input-2" readonly>
                         <span class="unit">°C</span>
                     </div>
                     <div class="slider-container">
@@ -60,23 +69,27 @@
                         <input type="range" class="slider-temp current" min="0" max="300" value="25" step="1" data-target="text-input-2" disabled>
                     </div>
                     
-                    <div>&nbsp;</div>
-                    <div>&nbsp;</div>
-                    <div>&nbsp;</div>
-
+                    <!-- blank line -->
+                    <div class="temperature-env">&nbsp;</div>
+                    
                     <!-- MESA AQUECIDA -->
-                    <div>
-                        &nbsp;
+                    <div class="temperature-env">
                         <h4>Mesa Aquecida:</h4>
+                    </div>
+                
+                    <div class="input-wrapper">
+                        <label>Definir Referência:</label>
+                        <input type="text" class="text-entry-temp" id="text-input-1" placeholder="Ex: 100">
+                        <span class="unit">°C</span>
                     </div>
                     <div class="input-wrapper">
                         <label>Referência (&#x25BC;)</label>
-                        <input type="text" class="text-entry-temp" value="0" id="text-input-3">
+                        <input type="text" class="text-display-temp" value="0" id="text-input-3" readonly>
                         <span class="unit">°C</span>
                     </div>
                     <div class="input-wrapper">
                         <label>Leitura (&#x25B2;)</label>
-                        <input type="text" class="text-entry-temp" value="25" id="text-input-4" readonly>
+                        <input type="text" class="text-display-temp" value="0" id="text-input-4" readonly>
                         <span class="unit">°C</span>
                     </div>
                     <div class="slider-container">
@@ -87,8 +100,6 @@
             </div>
         </div>
 
-        <button onclick="updateAllSliderValues()">temp</button>    
-    
     </div>
 
     <div class="column"> <!-- COLUMN B -->
@@ -101,33 +112,43 @@
             <div class="content">
                 <div class="grid-3x1">
                     <div class="cell">
-                        <button class="control-button dir button-up" id="button-add-z" onclick="position('Z', getMovementStep())"></button>
+                        <button class="control-button dir button-up" onclick="position('E', getMovementStep())"></button>
                     </div>
-                    <div class="cell with-label">Z</div>
+                    <div class="cell with-label">E</div>
                     <div class="cell">
-                        <button class="control-button dir button-down" onclick="position('Z-', getMovementStep())" id="button-sub-z"></button>
+                        <button class="control-button dir button-down" onclick="position('E-', getMovementStep())"></button>
                     </div>
                 </div>
                 <div class="grid-3x3">
                     <div class="cell"></div>
                     <div class="cell">
-                        <button class="control-button dir button-up" id="button-add-y" onclick="position('Y', getMovementStep())"></button>
+                        <button class="control-button dir button-up" onclick="position('Y', getMovementStep())"></button>
                     </div>
                     <div class="cell"></div>
                     <div class="cell">
-                        <button class="control-button dir button-left" id="button-sub-x" onclick="position('X-', getMovementStep())"></button>
+                        <button class="control-button dir button-left" onclick="position('X-', getMovementStep())"></button>
                     </div>
                     <div class="cell with-label">XY</div>
                     <div class="cell">
-                        <button class="control-button dir button-right" id="button-add-x" onclick="position('X', getMovementStep())"></button>
+                        <button class="control-button dir button-right" onclick="position('X', getMovementStep())"></button>
                     </div>
                     <div class="cell"></div>
                     <div class="cell">
-                        <button class="control-button dir button-down" id="button-sub-y" onclick="position('Y-', getMovementStep())"></button>
+                        <button class="control-button dir button-down" onclick="position('Y-', getMovementStep())"></button>
                     </div>
                     <div class="cell"></div>
                 </div>
+                <div class="grid-3x1">
+                    <div class="cell">
+                        <button class="control-button dir button-up" onclick="position('Z', getMovementStep())"></button>
+                    </div>
+                    <div class="cell with-label">Z</div>
+                    <div class="cell">
+                        <button class="control-button dir button-down" onclick="position('Z-', getMovementStep())"></button>
+                    </div>
+                </div>
             </div>
+
             <div class="content">
                 <div class="segmented-button">
                     <input type="radio" id="option1" name="mov-step" value="0.1">
@@ -142,8 +163,12 @@
                     <input type="radio" id="option4" name="mov-step" value="100.0">
                     <label for="option4">100</label>
                 </div>
+                <div class="container-halt">
+                    <button class="control-button" id="start" onclick="start()">
+                        <img class="control-button-icon-small" src="{{url_for('static', filename='images/release-motors.svg')}}">
+                    </button>        
+                </div>
             </div>
-            <!-- <button onclick="getMovementStep()">Get Value</button> -->
         </div>
 
         <div class="container open"> <!-- PRINT-->
@@ -152,41 +177,44 @@
                 <h1>Impressão</h1> 
             </div>
             <div class="content">
-
-
                 <div class="grid-print-flow">
+                    
                     <div class="cell">
                         <button class="control-button" id="start" onclick="start()">
-                            <img src="{{url_for('static', filename='images/start.svg')}}">
-                        </button>    
+                            <img class="control-button-icon-big" src="{{url_for('static', filename='images/start.svg')}}">
+                        </button> 
                     </div>
                     <div class="cell">
                         <button class="control-button" id="pause" onclick="pause()">
-                            <img src="{{url_for('static', filename='images/pause.svg')}}">
+                            <img class="control-button-icon-big" src="{{url_for('static', filename='images/pause.svg')}}">
                         </button>    
                     </div>
                     <div class="cell">
                         <button class="control-button" id="stop" onclick="stop()">
-                            <img src="{{url_for('static', filename='images/stop.svg')}}">
+                            <img class="control-button-icon-big" src="{{url_for('static', filename='images/stop.svg')}}">
                         </button>    
                     </div>
-
                     <div class="cell">
+                        <button class="control-button" id="submit-parent">
+                            <img class="control-button-icon-big" src="{{url_for('static', filename='images/stop.svg')}}">
+                        </button>
+                    </div>
+                    
+                    <div class="file-input-container">
                         <form id="fileUpload" method="POST" action="/upload" enctype="multipart/form-data">
+                            <button type="submit" id="submit-child" hidden></button>
                             <input type="file" name="arquivo" class="form-control">
-                            <button type="submit" class="control-button">Enviar</button>
-                        </form>  
+                        </form>
                     </div>
 
-                </div>
+                </div>  
             </div>
         </div>
-
     </div>
 
     <div class="column"> <!-- COLUMN C-->
 
-        <div class="container"> <!-- VIDEO -->
+        <div class="container" id="stream-toggle"> <!-- VIDEO -->
             <div class="title" onclick="toggleContainer(this)">
                 <h2>&#9650;</h2>
                 <h1>Vídeo</h1> 
@@ -198,15 +226,92 @@
             </div>
         </div>
         
+        <div class="container open"> <!-- CONFIG -->
+            <div class="title" onclick="toggleContainer(this)">
+                <h2>&#9650;</h2>
+                <h1>Configurações</h1> 
+            </div>
+            <div class="content">
+                <div class="grid-config">
+
+                    <!-- NAME -->
+                    <div class="input-wrapper">
+                        <label>Nome do Dispositivo</label>
+                        <input type="text" class="text-entry-temp" value="{{ name }}">
+                    </div>
+                    
+
+                    <!-- BAUDRATE -->
+
+
+                    <!-- DELETE DEVICE -->
+                    <div class="container remove-environ-container" id="remove-env">
+                        <div class="title" onclick="toggleContainer(this, true, true)">
+                            <button class="remove-button">Remover Dispostivo</button> 
+                        </div>
+                        <div class="content remove-environ">
+                            <div class="remove-warning">
+                                Você está prestes a remover <b>{{ name }}</b> da sua conta.<br>
+
+                                Seu identificador é: <b>{{ hash }}</b><br>
+                                <br>
+
+                                Anote o identificador, ele é único e necessário<br>
+                                para recadastrar esse dispositivo em uma conta MON3D.<br>
+                                <br>
+
+                                Para confirmar a exclusão, insira o identificador abaixo:
+                                <input type="text" class="text-entry-remove " placeholder="Identificador">
+
+                                <div class="grid-2x1">
+                                    <button class="remove-button smaller" onclick="toggleContainer(this.parentNode.parentNode.parentNode, true, false)">Cancelar</button> 
+                                    <button class="remove-button smaller">Confirmar</button>       
+                                </div>
+                            </div>        
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
     </div>
 
 </div>
 
 <script>
+document.addEventListener('DOMContentLoaded', function() {
+    var fileInput = document.getElementById('fileInput');
+    var customFileLabel = document.querySelector('.custom-file-label');
+    
+    fileInput.addEventListener('change', function() {
+        var fileName = this.value.split('\\').pop(); // Extracts the filename from the file path
+        customFileLabel.innerText = fileName || 'arquivo.gcode'; // Sets the label text to the filename or 'arquivo.gcode'
+    });
+});
+
+const button1 = document.getElementById('submit-parent');
+const button2 = document.getElementById('submit-child');
+
+button1.addEventListener('click', function() {
+  button2.click();
+});
+
+//WRITABLE TEXT INPUTS - DELETE AFTER DONE
+var elements = document.querySelectorAll('.text-entry-temp');
+
+elements.forEach(function(element) {
+    element.addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+        event.target.value = '';
+    }
+    });
+});
 
 //TEMPERATURE MANAGER
 const sliders = document.querySelectorAll(".slider-temp");
-const textInputs = document.querySelectorAll(".text-entry-temp");
+const textInputs = document.querySelectorAll(".text-display-temp");
 
 textInputs.forEach(function(textInput) {
     textInput.addEventListener("input", function() {
@@ -234,7 +339,7 @@ function updateAllSliderValues() {
 
 
 //TEXT INPUT TEMPERATURE
-const numberInputs = document.querySelectorAll('.text-entry-temp[type="text"]');
+const numberInputs = document.querySelectorAll('.text-display-temp[type="text"]');
 
 numberInputs.forEach(function(numberInput) {
   numberInput.addEventListener("input", function() {
@@ -243,15 +348,29 @@ numberInputs.forEach(function(numberInput) {
   });
 });
 
-// Retractable Container Function
-function toggleContainer(title) {
-    const container = title.parentNode;
-    container.classList.toggle('open');
 
-    $.ajax({
-          type: 'GET', // Método HTTP (pode ser POST ou GET, dependendo do seu caso)
-          url: '/toggle-streaming', // URL para onde enviar os dados
-        });
+// Retractable Container Function
+function toggleContainer(title, forceState = false, value = false) {
+    const container = title.parentNode;
+    
+    if (forceState) {
+        if (value) {
+            container.classList.add('open');
+        }
+        else {
+            container.classList.remove('open');
+        }
+    }
+    else {
+        container.classList.toggle('open');
+    }
+
+    if (container.id == 'stream-toggle') {
+        $.ajax({
+                type: 'GET', // Método HTTP (pode ser POST ou GET, dependendo do seu caso)
+                url: '/toggle-streaming', // URL para onde enviar os dados
+            });
+    }
 }
 
 // Movement base radio buttons

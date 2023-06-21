@@ -1,8 +1,13 @@
-{% extends 'base2.html' %}
+{% extends 'base3.html' %}
 
 {% block conteudo %}
 
-<div class="form-box">      
+<div class="form-box">          
+
+    
+    <img class="user-icon-big " src="{{url_for('static', filename='images/blank-user-icon.svg')}}">
+    <h2 class="user-name-display">{{ current_user.name }}</h2> 
+
     <form method="POST">
         {{ form_pass.hidden_tag() }}
         {{ form_name.hidden_tag() }}

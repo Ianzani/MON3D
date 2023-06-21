@@ -13,28 +13,47 @@
 /* ================ VIDEO ================ */
 .stream {
 	width: 100%;
-	aspect-ratio: 4/3;
+	aspect-ratio: 16/9;
 	background: black;
 }
 
 /* ================ GRIDS ================ */
 .grid-3x3 {
     display: grid;
-    width: 48%;
+    width: 39%;
     aspect-ratio: 1/1;
     grid-template-columns: repeat(3, 33.33%);
     grid-template-rows: repeat(3, 33.33%);
     gap: 0px;
-    margin-left: 8%;
+    /* margin-left: 8%; */
+    margin: 0 4% 0 4%;
 }
 
 .grid-3x1 {
     display: grid;    
-    width: 16%;
+    width: 13%;
     aspect-ratio: 1/1;
     grid-template-columns: repeat(1, 100%);
     grid-template-rows: repeat(3, 100%);
+    /* margin-right: 5%; */
     gap: 0px;
+}
+
+/* HOMING */
+.homing {
+    display: grid;    
+    width: 13%;
+    aspect-ratio: 1/3;
+    grid-template-columns: repeat(1, 100%);
+    grid-template-rows: 3fr 2fr 2fr 2fr;
+    margin: 0 0 0 4%;
+    gap: 0px;
+}
+
+
+.label-homing-axes {
+    font-weight: bolder;
+    font-size: 1.2vw;
 }
 
 .grid-general {
@@ -49,19 +68,22 @@
 
 .grid-print-flow {
     display: grid;
-    width: 60%;
-    aspect-ratio: 1/1;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    width: 81%;
+    height: auto;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, auto);
+    gap: 6.66%;
 }
+
 
 .grid-5x3 {
     display: grid;    
     width: 100%;
     height: min-content;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(5, auto);
+    grid-template-rows: repeat(7, auto);
     gap: 10px;
 }
 
@@ -69,6 +91,28 @@
     aspect-ratio: 1/1;
     background-color: transparent;
     padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.distorted {
+    aspect-ratio: auto;
+}
+
+
+/* ================ FORM ================= */
+.file-input-container {
+    display: inline-block;
+    position: relative;
+    grid-column: 1 / span 4;
+    height: auto;
+}
+
+.file-input-container form {
+    width: 100%;
+    grid-column: 1 / span 4;
+    margin: 10px 0 10px 0;
 }
 
 /* ================ BUTTONS ================ */
@@ -78,10 +122,9 @@
     position: relative;
     background-color:rgb(0, 60, 150);
     border-color: gray;
-    border-radius: 10px;
+    border-radius: 0.5vw;
     color: white;
     cursor: pointer;
-    border-radius: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -133,22 +176,37 @@
     font-size: 1.3vw;
 }
 
-.control-button img {
-    width: 70%;
+.control-button-icon-big {
+    width: 2vw;
+    min-width: 20px;
     aspect-ratio: 1/1;
+    margin: 10px;
+}
+
+
+.control-button-icon-small {
+    width: 2vw;
+    max-width: 30px;
+    aspect-ratio: 1/1;
+    margin: 10px;
+}
+
+
+.control-button-icon-smaller {
+    width: 1vw;
+    max-width: 30px;
     margin: 10px;
 }
 
 /* ================ SEGMENTED BUTTONS ================ */
 .segmented-button {
-    width: 72%;
-    height: min-content;
-    max-height: 40px;
+    width: calc(77%);
+    aspect-ratio: 77/10;
     display: flex;
     overflow: hidden;
     border: 1px solid #ccc;
     border-radius: 10px;
-    margin: 15px 0 0 0;
+    margin: 15px 3% 10px 0;
 }
 
 .segmented-button label {
@@ -174,6 +232,12 @@
     font-weight: bolder;
     font-size: 1.2vw;
     border-width: 0 1px 0 1px;
+}
+
+.container-halt {
+    margin: 15px 0 10px 0;
+    width: calc(10%);
+    aspect-ratio: 1/1;
 }
 
 /* ================ TEMPERATURE SLIDER ================ */
@@ -250,7 +314,12 @@ input[type="range"] {
 }
 
 /* ============= INPUT =============== */
+.temperature-env {
+    grid-column: 1 / span 3;
+}
+
 .text-entry-temp,
+.text-display-temp,
 .text-entry {
 	display: block;
 	width: 100%;
@@ -267,7 +336,7 @@ input[type="range"] {
 	-moz-appearance: none;
 	appearance: none;
 	border-radius: 10px;
-    box-sizing: border-box; /* Add this property */
+    box-sizing: border-box;
 }
 
 .input-wrapper {
@@ -280,3 +349,129 @@ input[type="range"] {
     top: 70%;
     transform: translateY(-50%) translateX(-30%);
 }
+
+
+/* CONFIGURATION */
+.grid-config {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: repeat(3, auto);
+    margin: 0 20px 0 20px;
+    gap: 20px;
+}
+
+
+/* REMOVE DEVICE */
+.remove-environ-container {
+    width: 100%;
+    max-height: 40px;
+    display: flex;
+    border-style: none;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: 10px;
+    padding: 0;
+    background-color:rgb(255, 240, 240);
+    background-blend-mode: normal;
+    background-position-y: -10px;
+}
+
+.title-remove {
+    width: 100%;
+    height: 40px;
+    font-weight: bold;
+    display: flex;
+    cursor: pointer;
+}
+
+.remove-button {
+    width: 100%;
+    height: 40px;
+    padding: 5px 0 5px 0;
+    margin: 0;
+    font-weight: bolder;
+    font-size: 1vw;
+    background-color:rgb(200, 0, 0);
+    border-color: gray;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    line-height: 1;
+}
+
+.remove-environ {
+    padding: 20px 0 20px 0;
+    background-color:rgb(255, 241, 240);
+    border: 0 1px 1px 1px solid rgb(255, 220, 220);
+    border-radius: 0 0 15px 15px;
+}
+
+.text-entry-remove {
+	display: block;
+	width: 100%;
+	padding: .375rem .75rem;
+    margin: 0 0 0 0;
+	font-size: 1rem;
+	font-weight: 400;
+	line-height: 1.5;
+	color: black;
+	background-color: white;
+	background-clip: padding-box;
+	border: 1px solid gray;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	border-radius: 10px;
+    box-sizing: border-box;
+}
+
+.remove-warning {
+    text-align: center;
+}
+
+.grid-2x1 {
+    width: 100%;
+    aspect-ratio: 10/1;
+    height: min-content;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 100%;
+    justify-items: center;
+}
+
+
+.centered-input {
+    text-align: center;
+}
+
+/*  CONFIG */
+
+.baud-change {
+    display: grid;
+    grid-template-columns: 80% 20%;
+    grid-template-rows: 30% 70%;
+    gap: 0px;
+}
+
+.baud-change input {
+    margin: 0;
+    padding: 0;
+}
+
+
+/* .grid-3x3 {
+    display: grid;
+    width: 36%;
+    aspect-ratio: 1/1;
+    grid-template-columns: repeat(3, 33.33%);
+    grid-template-rows: repeat(3, 33.33%);
+    gap: 0px;
+    margin-left: 8%;
+    margin: 0 5% 0 5%;
+} */

@@ -1,82 +1,12 @@
 from app import app
 from flask import render_template, request, jsonify, redirect, flash, url_for
-from firebase_admin import credentials, initialize_app, storage, firestore
-import os
 import time
-from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
-from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
-from werkzeug.security import generate_password_hash, check_password_hash
-from flask_migrate import Migrate
-import hashlib
-
 from app.models.forms import *
+from app.instances import *
+from app.functions import *
 
-#=====================Firebase=======================================
-cred = credentials.Certificate(os.environ.get('FIREBASE_KEY_PATH'))
-initialize_app(cred, {'storageBucket': os.environ.get('FIREBASE_BUCKET_PATH')})
-#====================================================================
-
-#================================Instancia Firebase==================
-db = firestore.client()
-bucket = storage.bucket()
-#====================================================================
-
-#=====================Banco de Dados Usuários========================
-dbUser = SQLAlchemy(app)
-migrate = Migrate(app, dbUser, render_as_batch=True)
-#====================================================================
-
-#========================Inicialização FlaskLogin====================
-login_manager = LoginManager()
-login_manager.init_app(app)
-login_manager.login_view = 'login'
-login_manager.login_message = 'Acesso negado.'
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
-#====================================================================
-
-#===================Classe Tabela Banco de Dados===============================
-class User(dbUser.Model, UserMixin):
-    id = dbUser.Column(dbUser.Integer, primary_key=True)
-    uid = dbUser.Column(dbUser.String, nullable = False, unique = True)
-    name = dbUser.Column(dbUser.String(100), nullable = False)
-    email = dbUser.Column(dbUser.String(100), nullable = False, unique = True)
-    password_hash = dbUser.Column(dbUser.String(100), nullable = False)
-    current = dbUser.Column(dbUser.String(100))
-    date_added = dbUser.Column(dbUser.DateTime, default = datetime.utcnow)
-
-    def __init__(self, name, email, password, uid):
-        self.name = name
-        self.email = email
-        self.password_hash = password
-        self.uid = uid
-
-    @property
-    def password(self):
-        raise AttributeError('password is not a readable attribute')
-    
-    @password.setter
-    def password(self, password):
-        self.password_hash = generate_password_hash(password)
-
-    def verify_password(self, password):
-        return check_password_hash(self.password_hash, password)
-    
-    def __repr__(self):
-        return '<Name %r>' % self.name
-#======================================================================
-
-#=====================Hash email=======================================
-def hash_email(email):
-    return hashlib.sha256(email.encode('utf-8')).hexdigest()
-#======================================================================
-
-def get_status() -> str:
-    return db.collection(current_user.uid).document(current_user.current).get().to_dict()['status']
-
+#============================================Truely Routes============================================
+#PRINTER DASHBOARD
 @app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def info():
@@ -90,56 +20,86 @@ def info():
     else:
         current_user.current = buffer
 
-    name = db.collection(current_user.uid).document(current_user.current).get().to_dict()['name']
-    db.collection(current_user.uid).document(current_user.current).update({'streaming': False, 
-                                                                           'updated':'streaming'})
-    return render_template('dashboard.html', name=name)
+    # Name and baurate change
+    form = SettingsForm()
 
-@app.route('/personalized', methods=['POST'])
+    database_get = db.collection(current_user.uid).document(current_user.current).get().to_dict()
+    name = database_get['name']  
+    baudrate = database_get['baudrate']
+
+    if request.method == 'POST':
+        form_type = request.form.get('form-type')
+
+        if form_type == 'name-form':
+            name = form.new_name.data
+            db.collection(current_user.uid).document(current_user.current).update({'name': name})
+            flash('Nome alterado com sucesso.')
+
+        elif form_type == 'baudrate-form':
+            baudrate = form.baudrate.data
+            db.collection(current_user.uid).document(current_user.current).update({'baudrate': baudrate})
+            flash('Taxa de trasmissão alterada com sucesso')
+
+        elif form_type == 'delete-form':
+            if form.delete.data == current_user.current:
+                db.collection(current_user.uid).document(current_user.current).delete()
+                flash('Dispositivo removido com sucesso.')
+                return redirect(url_for('devices'))
+
+    form.new_name.data = name
+    form.baudrate.data = baudrate
+
+    # Mobile/Desktop responsiviness
+    user_agent = request.headers.get('User-Agent')
+
+    if 'Mobile' in user_agent:
+        dashboard_page = 'dashboard-mobile.html'
+    else:
+        dashboard_page = 'dashboard-desktop.html'
+
+    return render_template(dashboard_page, hash=current_user.current, name=name, baud=baudrate, form=form)
+
+#-----------------------------------------------------------------------------------------------------
+#REGISTERED DEVICES
+@app.route('/devices')
 @login_required
-def personalized():
+def devices():
+    devices = db.collection(current_user.uid).get()
 
-    if get_status() in ['ready', 'paused']:
-        value = request.form.get("gCode")
-        if value:
-            db.collection(current_user.uid).document(current_user.current).update({'command':str(value), 
-                                                                                'updated' : 'command'})
-    return ''
+    return render_template('devices.html', devices=devices)
 
-@app.route('/position', methods=['POST'])
+#-----------------------------------------------------------------------------------------------------
+#NEW DEVICE
+@app.route('/devices/new-device', methods=['GET', 'POST'])
 @login_required
-def position():
-    if get_status() in ['ready', 'paused']:
-        value = request.form.get("value")
-        step = request.form.get('step')
-        if value:
-            db.collection(current_user.uid).document(current_user.current).update({'command':f'G91_G0 {value}{step}_G90',
-                                                                                    'updated' : 'command'})
-    return ''
+def new_device():
+    form = NewDeviceForm()
 
-@app.route('/upload', methods=['POST'])
-@login_required
-def upload():
-    if 'arquivo' in request.files:
-            arquivo = request.files['arquivo']
-            if arquivo.filename.split('.')[1] == 'gcode':
-                arquivo.save('./files/' + arquivo.filename)
-                blob = bucket.blob(current_user.uid+'/'+current_user.current+'/printfile.gcode')
-                blob.upload_from_filename("files/" + arquivo.filename)
-                os.remove("./files/" + arquivo.filename)
-    return ''
-    
-@app.route('/get-temp', methods=['GET'])
-@login_required
-def get_temp():
+    if form.validate_on_submit():
+        try:
+            db.collection("QueuedRaspberrys").document(form.id.data).update({'user':current_user.uid, 
+                                                                            'name': form.name.data, 
+                                                                            'baudrate': form.baud.data,
+                                                                            'icon': request.form['campo']})
+        except:
+            flash('ID inválido.')
+            return render_template('new_device.html', form=form)
 
-    temp = db.collection(current_user.uid).document(current_user.current).get()
-    temp_ex = temp.to_dict()['hotend']['current']
-    temp_bed = temp.to_dict()['heatbed']['current']
-    delay = 60000
+        time.sleep(4)
+        flash('Dispositivo cadastrado com sucesso.')
+        return redirect(url_for('devices'))
 
-    return jsonify(temp_ex=temp_ex, temp_bed=temp_bed, delay=delay)
+    return render_template('new_device.html', form=form)
 
+#-----------------------------------------------------------------------------------------------------
+#ROOT/HOME
+@app.route('/')
+@app.route('/home')
+def home():
+    return render_template('home.html')
+
+#-----------------------------------------------------------------------------------------------------
+#LOGIN
 @app.route('/login', methods = ['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -153,7 +113,9 @@ def login():
         flash('Email ou senha inválidos.')       
 
     return render_template('login.html', form=form)
-     
+
+#-----------------------------------------------------------------------------------------------------
+#SIGNUP
 @app.route('/signup', methods = ['GET', 'POST'])
 def new_user():
     form = RegisterForm()
@@ -173,56 +135,8 @@ def new_user():
 
     return render_template('signup.html', form=form)
 
-@app.route('/logout', methods=['GET', 'POST'])
-@login_required
-def logout():
-    logout_user()
-    flash("Logout feito com sucesso.")
-    return redirect(url_for('login'))
-
-@app.route('/delete')
-def delete():
-
-    user = User.query.order_by(User.id).all()
-
-    for i in user:
-        dbUser.session.delete(i)
-        dbUser.session.commit()
-
-    return redirect(url_for('login'))
-
-@app.route('/devices/new-device', methods=['GET', 'POST'])
-@login_required
-def new_device():
-    form = NewDeviceForm()
-
-    if form.validate_on_submit():
-        try:
-            db.collection("QueuedRaspberrys").document(form.id.data).update({'user':current_user.uid, 
-                                                                            'name': form.name.data, 
-                                                                            'baudrate': form.baud.data,
-                                                                            'icon': request.form['campo']})
-        except:
-            flash('ID inválido.')
-            return render_template('new_device.html', form=form)
-
-        time.sleep(4)
-        return redirect(url_for('devices'))
-
-    return render_template('new_device.html', form=form)
-
-@app.route('/devices')
-@login_required
-def devices():
-    devices = db.collection(current_user.uid).get()
-
-    return render_template('devices.html', devices=devices)
-
-@app.route('/')
-@app.route('/home')
-def home():
-    return render_template('home.html')
-
+#-----------------------------------------------------------------------------------------------------
+#USER DASHBOARD/EDIT USER
 @app.route('/user', methods=['GET', 'POST'])
 @login_required
 def user():
@@ -247,16 +161,10 @@ def user():
                            form_name=form_name, 
                            email=current_user.email, 
                            name=current_user.name)
+#=====================================================================================================
 
-@app.route('/toggle-streaming')
-@login_required
-def toggle_streaming():
-
-    test = db.collection(current_user.uid).document(current_user.current).get().to_dict()['streaming'] == False
-    db.collection(current_user.uid).document(current_user.current).update({'streaming': test, 'updated':'streaming'})
-
-    return ''
-
+#========================================Only Function's Routes=======================================
+#CONNECT(BOOT)
 @app.route('/connect')
 @login_required
 def connect():
@@ -264,6 +172,21 @@ def connect():
         db.collection(current_user.uid).document(current_user.current).update({'status': 'boot'})        
     return ''
 
+#-----------------------------------------------------------------------------------------------------
+#DELETE(ADM FUNCTION)
+@app.route('/delete')
+def delete():
+
+    user = User.query.order_by(User.id).all()
+
+    for i in user:
+        dbUser.session.delete(i)
+        dbUser.session.commit()
+
+    return redirect(url_for('login'))
+
+#-----------------------------------------------------------------------------------------------------
+#DISCONNECT
 @app.route('/disconnect')
 @login_required
 def disconnect():
@@ -272,6 +195,147 @@ def disconnect():
                                                                                'updated': 'status'})
     return ''
 
+#-----------------------------------------------------------------------------------------------------
+@app.route('/get-status')
+@login_required
+def get_status_route():
+    status = db.collection(current_user.uid).document(current_user.current).get().to_dict()['status']
+    return jsonify(status=status)
+
+#-----------------------------------------------------------------------------------------------------
+#GET TEMPERATURE
+@app.route('/get-temp', methods=['GET'])
+@login_required
+def get_temp():
+
+    temp = db.collection(current_user.uid).document(current_user.current).get()
+    temp_ex = temp.to_dict()['hotend']['current']
+    temp_bed = temp.to_dict()['heatbed']['current']
+    temp_ex_ref = temp.to_dict()['hotend']['setpoint']
+    temp_bed_ref = temp.to_dict()['heatbed']['setpoint']
+    status = temp.to_dict()['status']
+    delay = 1000
+
+    match status:
+        case 'ready':
+            status = 'Pronto'
+        case 'idle':
+            status = 'Desconectado'
+        case 'printing':
+            status = 'Imprimindo'
+        case 'paused':
+            status = 'Pausado'
+        case 'boot':
+            status = 'Conectando...'
+        case 'busy':
+            status = 'Ocupado'
+        case _:
+            status = 'None'
+
+    return jsonify(temp_ex=temp_ex, 
+                   temp_bed=temp_bed, 
+                   delay=delay, 
+                   status=status, 
+                   temp_ex_ref=temp_ex_ref, 
+                   temp_bed_ref=temp_bed_ref)
+
+#-----------------------------------------------------------------------------------------------------
+#LOGOUT
+@app.route('/logout', methods=['GET', 'POST'])
+@login_required
+def logout():
+    logout_user()
+    flash("Logout feito com sucesso.")
+    return redirect(url_for('login'))
+
+#-----------------------------------------------------------------------------------------------------
+#PAUSE PRINTING
+@app.route('/pause')
+@login_required
+def pause():
+    if get_status() == 'printing':
+        db.collection(current_user.uid).document(current_user.current).update({'status': 'pause-print',
+                                                                               'updated': 'status'})
+    return ''
+
+#-----------------------------------------------------------------------------------------------------
+#GCODE PERSONALIZED
+@app.route('/personalized', methods=['POST'])
+@login_required
+def personalized():
+
+    if get_status() in ['ready', 'paused']:
+        value = request.form.get("gCode")
+        if value:
+            db.collection(current_user.uid).document(current_user.current).update({'command':str(value), 
+                                                                                'updated' : 'command'})
+    return ''
+
+#-----------------------------------------------------------------------------------------------------
+#MOVE CONTROLLERS
+@app.route('/position', methods=['POST'])
+@login_required
+def position():
+    if get_status() in ['ready', 'paused']:
+        value = request.form.get("value")
+        step = request.form.get('step')
+        if value:
+            db.collection(current_user.uid).document(current_user.current).update({'command':f'G91_G0 {value}{step}_G90',
+                                                                                    'updated' : 'command'})
+    return ''
+
+#-----------------------------------------------------------------------------------------------------
+#SET TEMP EXT
+@app.route('/set-temp-ex', methods=['POST'])
+@login_required
+def set_temp_ex():
+    if get_status() in ['ready', 'paused']:
+        setTempEx = request.form.get("setTempEx")
+        print(setTempEx)
+        if setTempEx:
+            db.collection(current_user.uid).document(current_user.current).update({'command':f'M104 S{setTempEx}',
+                                                                                    'updated' : 'command'})
+    return ''
+
+#-----------------------------------------------------------------------------------------------------
+#SET TEMP BED
+@app.route('/set-temp-bed', methods=['POST'])
+@login_required
+def set_temp_bed():
+    if get_status() in ['ready', 'paused']:
+        setTempBed = request.form.get("setTempBed")
+        if setTempBed:
+            db.collection(current_user.uid).document(current_user.current).update({'command':f'M140 S{setTempBed}',
+                                                                                    'updated' : 'command'})
+    return ''
+
+#-----------------------------------------------------------------------------------------------------
+#SET TEMP BED
+@app.route('/default-commands', methods=['POST'])
+@login_required
+def default_commands():
+    if get_status() in ['ready', 'paused']:
+        value = request.form.get("value")
+        command = request.form.get('command')
+
+        match command:
+            case 'homing':
+                if value != 'A':
+                    db.collection(current_user.uid).document(current_user.current).update({'command':f'G28 {value}',
+                                                                                            'updated' : 'command'})
+                else:
+                    db.collection(current_user.uid).document(current_user.current).update({'command':'G28',
+                                                                                            'updated' : 'command'})
+            case 'disable_steppers':
+                db.collection(current_user.uid).document(current_user.current).update({'command':'M18',
+                                                                                            'updated' : 'command'})
+            case _:
+                pass
+
+    return ''
+
+#-----------------------------------------------------------------------------------------------------
+#START PRINTING/RESUME PRINTING
 @app.route('/start')
 @login_required
 def start():
@@ -283,14 +347,8 @@ def start():
                                                                                'updated': 'status'})
     return ''
 
-@app.route('/pause')
-@login_required
-def pause():
-    if get_status() == 'printing':
-        db.collection(current_user.uid).document(current_user.current).update({'status': 'pause-print',
-                                                                               'updated': 'status'})
-    return ''
-
+#-----------------------------------------------------------------------------------------------------
+#STOP PRINTING
 @app.route('/stop')
 @login_required
 def stop():
@@ -298,3 +356,31 @@ def stop():
         db.collection(current_user.uid).document(current_user.current).update({'status': 'stop-print',
                                                                                'updated': 'status'})
     return ''
+
+#-----------------------------------------------------------------------------------------------------
+#STREAMING VIEW CONTROLLER
+@app.route('/toggle-streaming')
+@login_required
+def toggle_streaming():
+
+    test = db.collection(current_user.uid).document(current_user.current).get().to_dict()['streaming'] == False
+    db.collection(current_user.uid).document(current_user.current).update({'streaming': test, 'updated':'streaming'})
+
+    return ''
+
+#-----------------------------------------------------------------------------------------------------
+#UPLOAD FILE
+@app.route('/upload', methods=['POST'])
+@login_required
+def upload():
+    if 'arquivo' in request.files:
+            arquivo = request.files['arquivo']
+            if arquivo.filename.split('.')[1] == 'gcode':
+                arquivo.save('./files/' + arquivo.filename)
+                blob = bucket.blob(current_user.uid+'/'+current_user.current+'/printfile.gcode')
+                blob.upload_from_filename("files/" + arquivo.filename)
+                os.remove("./files/" + arquivo.filename)
+    return ''
+
+
+#=====================================================================================================
