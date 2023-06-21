@@ -216,21 +216,20 @@ def get_temp():
     status = temp.to_dict()['status']
     delay = 1000
 
-    match status:
-        case 'ready':
-            status = 'Pronto'
-        case 'idle':
-            status = 'Desconectado'
-        case 'printing':
-            status = 'Imprimindo'
-        case 'paused':
-            status = 'Pausado'
-        case 'boot':
-            status = 'Conectando...'
-        case 'busy':
-            status = 'Ocupado'
-        case _:
-            status = 'None'
+    if status == 'ready':
+        status = 'Pronto'
+    elif status == 'idle':
+        status = 'Desconectado'
+    elif status == 'printing':
+        status = 'Imprimindo'
+    elif status == 'paused':
+        status = 'Pausado'
+    elif status == 'boot':
+        status = 'Conectando...'
+    elif status == 'busy':
+        status = 'Ocupado'
+    else:
+        status = 'None'
 
     return jsonify(temp_ex=temp_ex, 
                    temp_bed=temp_bed, 
@@ -318,19 +317,18 @@ def default_commands():
         value = request.form.get("value")
         command = request.form.get('command')
 
-        match command:
-            case 'homing':
-                if value != 'A':
-                    db.collection(current_user.uid).document(current_user.current).update({'command':f'G28 {value}',
+        if command == 'homing':
+            if value != 'A':
+                db.collection(current_user.uid).document(current_user.current).update({'command':f'G28 {value}',
+                                                                                        'updated' : 'command'})
+            else:
+                db.collection(current_user.uid).document(current_user.current).update({'command':'G28',
+                                                                                        'updated' : 'command'})
+        elif command == 'disable_steppers':
+            db.collection(current_user.uid).document(current_user.current).update({'command':'M18',
                                                                                             'updated' : 'command'})
-                else:
-                    db.collection(current_user.uid).document(current_user.current).update({'command':'G28',
-                                                                                            'updated' : 'command'})
-            case 'disable_steppers':
-                db.collection(current_user.uid).document(current_user.current).update({'command':'M18',
-                                                                                            'updated' : 'command'})
-            case _:
-                pass
+        else:
+            pass
 
     return ''
 
