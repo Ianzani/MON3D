@@ -1,0 +1,19 @@
+{% extends 'base3.html' %}
+
+{% block conteudo %}
+
+    <div class="form-box">      
+        <h3>Deletar usuário</h3>
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            <div class="form-input extra-top-padding">
+                {{ form.uid.label(class="form-label")}}
+                {{ form.uid(class="form-control") }}        
+            </div>
+            <div class="form-input extra-top-padding">
+                {{form.submit(class="btn btn-danger")}}
+            </div>
+        </form>
+    </div>
+
+{% endblock %}

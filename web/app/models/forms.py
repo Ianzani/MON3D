@@ -58,3 +58,6 @@ class SettingsForm(FlaskForm):
 
     submit = SubmitField("Salvar")
 
+class AdminForm(FlaskForm):
+    uid = StringField("UID", validators=[DataRequired()])
+    submit = SubmitField('Deletar')

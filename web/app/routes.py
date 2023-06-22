@@ -60,6 +60,30 @@ def info():
     return render_template(dashboard_page, hash=current_user.current, name=name, baud=baudrate, form=form)
 
 #-----------------------------------------------------------------------------------------------------
+@app.route('/delete', methods=['GET', 'POST'])
+@login_required
+def delete():
+    if current_user.id != 1:
+        flash('Acesso negado.')
+        return redirect(url_for('devices'))
+
+    form = AdminForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(uid=form.uid.data).first()
+
+        if user.id == 1:
+            flash('Usuário protegido.')
+            form.uid.data = ''
+            return render_template('admin.html', form=form)
+        else:
+            dbUser.session.delete(user)
+            dbUser.session.commit()
+            flash('Usuário deletado com sucesso.')
+
+    form.uid.data = ''
+    return render_template('admin.html', form=form)
+
+#-----------------------------------------------------------------------------------------------------
 #REGISTERED DEVICES
 @app.route('/devices')
 @login_required
@@ -102,6 +126,10 @@ def home():
 #LOGIN
 @app.route('/login', methods = ['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        flash('Usuário já logado.')
+        return redirect(url_for('devices'))
+
     form = LoginForm()
 
     if form.validate_on_submit():
@@ -118,6 +146,10 @@ def login():
 #SIGNUP
 @app.route('/signup', methods = ['GET', 'POST'])
 def new_user():
+    if current_user.is_authenticated:
+        flash('Usuário já logado.')
+        return redirect(url_for('devices'))
+
     form = RegisterForm()
 
     if form.validate_on_submit():
@@ -171,19 +203,6 @@ def connect():
     if get_status() == 'idle':
         db.collection(current_user.uid).document(current_user.current).update({'status': 'boot'})        
     return ''
-
-#-----------------------------------------------------------------------------------------------------
-#DELETE(ADM FUNCTION)
-@app.route('/delete')
-def delete():
-
-    user = User.query.order_by(User.id).all()
-
-    for i in user:
-        dbUser.session.delete(i)
-        dbUser.session.commit()
-
-    return redirect(url_for('login'))
 
 #-----------------------------------------------------------------------------------------------------
 #DISCONNECT
@@ -373,11 +392,12 @@ def toggle_streaming():
 def upload():
     if 'arquivo' in request.files:
             arquivo = request.files['arquivo']
-            if arquivo.filename.split('.')[1] == 'gcode':
-                arquivo.save('./files/' + arquivo.filename)
-                blob = bucket.blob(current_user.uid+'/'+current_user.current+'/printfile.gcode')
-                blob.upload_from_filename("files/" + arquivo.filename)
-                os.remove("./files/" + arquivo.filename)
+            if arquivo.filename:
+                if arquivo.filename.split('.')[1] == 'gcode':
+                    arquivo.save('./files/' + arquivo.filename)
+                    blob = bucket.blob(current_user.uid+'/'+current_user.current+'/printfile.gcode')
+                    blob.upload_from_filename("files/" + arquivo.filename)
+                    os.remove("./files/" + arquivo.filename)
     return ''
 
 
