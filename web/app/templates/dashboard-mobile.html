@@ -2,280 +2,312 @@
 
 {% block conteudo %}
 
+<link rel="stylesheet" href="{{url_for('static', filename='css/dashboard-mobile.css')}}"> 
+
 <div class="dashboard-grid">
-    mobile
-  
-
-    <div class="column"> <!-- COLUMN A -->
-
-        <div class="container open"> <!-- GERAL-->
-            <div class="title" onclick="toggleContainer(this)">
-                <h2>&#9650;</h2>
-                <h1>Geral</h1> 
-            </div>
-            <div class="content">
-                <div class="grid-general">
-                    <button class="control-button" id="connect" onclick="connect()">
-                        Conectar
-                    </button>
-                    <button class="control-button" id="disconnect" onclick="disconnect()">
-                        Desconectar
-                    </button>
-                    <div class="input-wrapper">
-                        <label>Status</label>
-                        <input type="text" class="text-entry" value="0" id="status" readonly>
-                    </div>
-                    <div class="input-wrapper" style="grid-column: 1 / span 3;">
-                        <form id="gcodeForm" action="/personalized" method="POST">
-                            <label>G-Code Customizado</label>
-                            <input type="text" class="text-entry" id="command" placeholder="Exemplo: G0">
-                        </form>
-                    </div>
+    
+    <!-- GERAL -->
+    <div class="container">
+        <div class="title" onclick="toggleContainer(this)">
+            <h2>&#9650;</h2>
+            <h1>Geral</h1> 
+        </div>
+        <div class="content" style="margin-bottom: 20px;">
+            <div class="grid-general">
+                <button class="control-button general-button" id="connect" onclick="connect()">
+                    Conectar
+                </button>
+                <button class="control-button general-button" id="disconnect" onclick="disconnect()">
+                    Desconectar
+                </button>
+                <div class="input-wrapper">
+                    <label>Status</label>
+                    <input type="text" class="text-entry" id="status" readonly>
+                </div>
+                <div class="input-wrapper" style="grid-column: 1 / span 3; margin-top: 15px">
+                    <form id="gcodeForm" action="/personalized" method="POST">
+                        <label>G-Code Customizado</label>
+                        <input type="text" class="text-entry" id="command" placeholder="Exemplo: G0">
+                    </form>
                 </div>
             </div>
         </div>
-
-        <div class="container open"> <!-- TEMPERATURA-->
-            <div class="title" onclick="toggleContainer(this)">
-                <h2>&#9650;</h2>
-                <h1>Temperatura</h1>
-                
-            </div>
-            <div class="content">
-                
-                <div class="grid-5x3">
-                    <!-- EXTRUSORA -->
-                    <div class="temperature-env">
-                        <h4>Extrusora:</h4>
-                    </div>
-                
-                    <div class="input-wrapper">
-                        <label>Definir Referência:</label>
-                        <input type="text" class="text-entry-temp" id="text-input-1" placeholder="Ex: 100">
-                        <span class="unit">°C</span>
-                    </div>
-                    <div class="input-wrapper">
-                        <label>Referência (&#x25BC;)</label>
-                        <input type="text" class="text-display-temp" value="0" id="text-input-1" readonly>
-                        <span class="unit">°C</span>
-                    </div>
-                    <div class="input-wrapper">
-                        <label>Leitura (&#x25B2;)</label>
-                        <input type="text" class="text-display-temp" value="0" id="text-input-2" readonly>
-                        <span class="unit">°C</span>
-                    </div>
-                    <div class="slider-container">
-                        <input type="range" class="slider-temp set-point" min="0" max="300" value="0" step="1" data-target="text-input-1" disabled>
-                        <input type="range" class="slider-temp current" min="0" max="300" value="25" step="1" data-target="text-input-2" disabled>
-                    </div>
-                    
-                    <!-- blank line -->
-                    <div class="temperature-env">&nbsp;</div>
-                    
-                    <!-- MESA AQUECIDA -->
-                    <div class="temperature-env">
-                        <h4>Mesa Aquecida:</h4>
-                    </div>
-                
-                    <div class="input-wrapper">
-                        <label>Definir Referência:</label>
-                        <input type="text" class="text-entry-temp" id="text-input-1" placeholder="Ex: 100">
-                        <span class="unit">°C</span>
-                    </div>
-                    <div class="input-wrapper">
-                        <label>Referência (&#x25BC;)</label>
-                        <input type="text" class="text-display-temp" value="0" id="text-input-3" readonly>
-                        <span class="unit">°C</span>
-                    </div>
-                    <div class="input-wrapper">
-                        <label>Leitura (&#x25B2;)</label>
-                        <input type="text" class="text-display-temp" value="0" id="text-input-4" readonly>
-                        <span class="unit">°C</span>
-                    </div>
-                    <div class="slider-container">
-                        <input type="range" class="slider-temp set-point" min="0" max="300" data-target="text-input-3" disabled>
-                        <input type="range" class="slider-temp current" min="0" max="300" data-target="text-input-4" disabled>
-                    </div>
-                </div>
-            </div>
+    </div>
+    
+    <!-- VIDEO -->
+    <div class="container" id="stream-toggle">
+        <div class="title" onclick="toggleContainer(this)">
+            <h2>&#9650;</h2>
+            <h1>Vídeo</h1> 
         </div>
-
+        <div class="content">
+            <video class="stream" id="video" muted nocontrols autoplay playsinline></video>
+            <script src="https://cdn.jsdelivr.net/npm/hls.js@1.4.3"></script>
+        </div>
     </div>
 
-    <div class="column"> <!-- COLUMN B -->
-
-        <div class="container open"> <!-- MOVIMENTO-->
-            <div class="title" onclick="toggleContainer(this)">
-                <h2>&#9650;</h2>
-                <h1>Movimento</h1> 
-            </div>
-            <div class="content">
-                <div class="grid-3x1">
-                    <div class="cell">
-                        <button class="control-button dir button-up" onclick="position('E', getMovementStep())"></button>
-                    </div>
-                    <div class="cell with-label">E</div>
-                    <div class="cell">
-                        <button class="control-button dir button-down" onclick="position('E-', getMovementStep())"></button>
-                    </div>
-                </div>
-                <div class="grid-3x3">
-                    <div class="cell"></div>
-                    <div class="cell">
-                        <button class="control-button dir button-up" onclick="position('Y', getMovementStep())"></button>
-                    </div>
-                    <div class="cell"></div>
-                    <div class="cell">
-                        <button class="control-button dir button-left" onclick="position('X-', getMovementStep())"></button>
-                    </div>
-                    <div class="cell with-label">XY</div>
-                    <div class="cell">
-                        <button class="control-button dir button-right" onclick="position('X', getMovementStep())"></button>
-                    </div>
-                    <div class="cell"></div>
-                    <div class="cell">
-                        <button class="control-button dir button-down" onclick="position('Y-', getMovementStep())"></button>
-                    </div>
-                    <div class="cell"></div>
-                </div>
-                <div class="grid-3x1">
-                    <div class="cell">
-                        <button class="control-button dir button-up" onclick="position('Z', getMovementStep())"></button>
-                    </div>
-                    <div class="cell with-label">Z</div>
-                    <div class="cell">
-                        <button class="control-button dir button-down" onclick="position('Z-', getMovementStep())"></button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="content">
-                <div class="segmented-button">
-                    <input type="radio" id="option1" name="mov-step" value="0.1">
-                    <label for="option1">0.1</label>
-                    
-                    <input type="radio" id="option2" name="mov-step" value="1.0">
-                    <label for="option2">1</label>
-        
-                    <input type="radio" id="option3" name="mov-step" value="10.0" checked>
-                    <label for="option3">10</label>
-
-                    <input type="radio" id="option4" name="mov-step" value="100.0">
-                    <label for="option4">100</label>
-                </div>
-                <div class="container-halt">
+    <!-- PRINT -->
+    <div class="container open">
+        <div class="title" onclick="toggleContainer(this)">
+            <h2>&#9650;</h2>
+            <h1>Impressão</h1> 
+        </div>
+        <div class="content">
+            <div class="grid-print-flow">
+                <div class="cell">
                     <button class="control-button" id="start" onclick="start()">
-                        <img class="control-button-icon-small" src="{{url_for('static', filename='images/release-motors.svg')}}">
-                    </button>        
+                        <img class="control-button-icon-big" src="{{url_for('static', filename='images/start.svg')}}">
+                    </button> 
+                </div>
+                <div class="cell">
+                    <button class="control-button" id="pause" onclick="pause()">
+                        <img class="control-button-icon-big" src="{{url_for('static', filename='images/pause.svg')}}">
+                    </button>    
+                </div>
+                <div class="cell">
+                    <button class="control-button" id="stop" onclick="stop()">
+                        <img class="control-button-icon-big" src="{{url_for('static', filename='images/stop.svg')}}">
+                    </button>    
+                </div>
+                <div class="cell">
+                    <button class="control-button" id="submit-parent" style="position: relative;">
+                        <img class="control-button-icon-big" 
+                        style="width: 3vw; position: absolute; transform: translate(5%, -5%);" 
+                        src="{{url_for('static', filename='images/upload.svg')}}">
+                    </button>
+                </div>
+                <div class="file-input-container">
+                    <form id="fileUpload" method="POST" action="/upload" enctype="multipart/form-data">
+                        <button type="submit" id="submit-child" hidden></button>
+                        <input type="file" name="arquivo" class="form-control">
+                    </form>
+                </div>
+            </div>  
+        </div>
+    </div>
+
+    <!-- MOVIMENTO -->
+    <div class="container"> 
+        <div class="title" onclick="toggleContainer(this)">
+            <h2>&#9650;</h2>
+            <h1>Movimento</h1> 
+        </div>
+        <div class="content">
+            <div class="grid-3x1">
+                <div class="cell">
+                    <button class="control-button dir button-up" onclick="position('E', getMovementStep())"></button>
+                </div>
+                <div class="cell with-label">E</div>
+                <div class="cell">
+                    <button class="control-button dir button-down" onclick="position('E-', getMovementStep())"></button>
+                </div>
+            </div>
+            <div class="grid-3x3">
+                <div class="cell"></div>
+                <div class="cell">
+                    <button class="control-button dir button-up" onclick="position('Y', getMovementStep())"></button>
+                </div>
+                <div class="cell"></div>
+                <div class="cell">
+                    <button class="control-button dir button-left" onclick="position('X-', getMovementStep())"></button>
+                </div>
+                <div class="cell with-label">XY</div>
+                <div class="cell">
+                    <button class="control-button dir button-right" onclick="position('X', getMovementStep())"></button>
+                </div>
+                <div class="cell"></div>
+                <div class="cell">
+                    <button class="control-button dir button-down" onclick="position('Y-', getMovementStep())"></button>
+                </div>
+                <div class="cell"></div>
+            </div>
+            <div class="grid-3x1">
+                <div class="cell">
+                    <button class="control-button dir button-up" onclick="position('Z', getMovementStep())"></button>
+                </div>
+                <div class="cell with-label">Z</div>
+                <div class="cell">
+                    <button class="control-button dir button-down" onclick="position('Z-', getMovementStep())"></button>
+                </div>
+            </div>
+            <div class="homing">
+                <div class="cell">
+                    <button class="control-button" style="border-radius: 10px 10px 0 0;" id="stop" onclick="default_commands('A', 'homing')">
+                        <img class="control-button-icon-big" src="{{url_for('static', filename='images/home-0.svg')}}">
+                    </button>    
+                </div>
+                <div class="cell distorted">
+                    <button class="control-button label-homing-axes" style="border-radius: 0" id="stop" onclick="default_commands('X', 'homing')">
+                        X
+                    </button>
+                </div>
+                <div class="cell distorted">
+                    <button class="control-button label-homing-axes" style="border-radius: 0" id="stop" onclick="default_commands('Y', 'homing')">
+                        Y
+                    </button> 
+                </div>
+                <div class="cell distorted">
+                    <button class="control-button label-homing-axes" style="border-radius: 0 0 10px 10px;" id="stop" onclick="default_commands('Z', 'homing')">
+                        Z
+                    </button>    
                 </div>
             </div>
         </div>
-
-        <div class="container open"> <!-- PRINT-->
-            <div class="title" onclick="toggleContainer(this)">
-                <h2>&#9650;</h2>
-                <h1>Impressão</h1> 
+        <div class="content">
+            <div class="segmented-button">
+                <input type="radio" id="option1" name="mov-step" value="0.1">
+                <label for="option1">0.1</label>
+                <input type="radio" id="option2" name="mov-step" value="1.0">
+                <label for="option2">1</label>
+                <input type="radio" id="option3" name="mov-step" value="10.0" checked>
+                <label for="option3">10</label>
+                <input type="radio" id="option4" name="mov-step" value="100.0">
+                <label for="option4">100</label>
             </div>
-            <div class="content">
-                <div class="grid-print-flow">
-                    
-                    <div class="cell">
-                        <button class="control-button" id="start" onclick="start()">
-                            <img class="control-button-icon-big" src="{{url_for('static', filename='images/start.svg')}}">
-                        </button> 
-                    </div>
-                    <div class="cell">
-                        <button class="control-button" id="pause" onclick="pause()">
-                            <img class="control-button-icon-big" src="{{url_for('static', filename='images/pause.svg')}}">
-                        </button>    
-                    </div>
-                    <div class="cell">
-                        <button class="control-button" id="stop" onclick="stop()">
-                            <img class="control-button-icon-big" src="{{url_for('static', filename='images/stop.svg')}}">
-                        </button>    
-                    </div>
-                    <div class="cell">
-                        <button class="control-button" id="submit-parent">
-                            <img class="control-button-icon-big" src="{{url_for('static', filename='images/stop.svg')}}">
-                        </button>
-                    </div>
-                    
-                    <div class="file-input-container">
-                        <form id="fileUpload" method="POST" action="/upload" enctype="multipart/form-data">
-                            <button type="submit" id="submit-child" hidden></button>
-                            <input type="file" name="arquivo" class="form-control">
-                        </form>
-                    </div>
-
-                </div>  
+            <div class="container-halt">
+                <button class="control-button" onclick="default_commands('None', 'disable_steppers')">
+                    <img class="control-button-icon-small" src="{{url_for('static', filename='images/release-motors.svg')}}">
+                </button>        
             </div>
         </div>
     </div>
 
-    <div class="column"> <!-- COLUMN C-->
-
-        <div class="container" id="stream-toggle"> <!-- VIDEO -->
-            <div class="title" onclick="toggleContainer(this)">
-                <h2>&#9650;</h2>
-                <h1>Vídeo</h1> 
-            </div>
-            <div class="content">
-                <video class="stream" id="video" muted nocontrols autoplay playsinline></video>
-                <script src="https://cdn.jsdelivr.net/npm/hls.js@1.4.3"></script>
-
-            </div>
+    <!-- TEMPERATURA -->
+    <div class="container"> 
+        <div class="title" onclick="toggleContainer(this)">
+            <h2>&#9650;</h2>
+            <h1>Temperatura</h1>
         </div>
-        
-        <div class="container open"> <!-- CONFIG -->
-            <div class="title" onclick="toggleContainer(this)">
-                <h2>&#9650;</h2>
-                <h1>Configurações</h1> 
-            </div>
-            <div class="content">
-                <div class="grid-config">
-
-                    <!-- NAME -->
-                    <div class="input-wrapper">
-                        <label>Nome do Dispositivo</label>
-                        <input type="text" class="text-entry-temp" value="{{ name }}">
-                    </div>
-                    
-
-                    <!-- BAUDRATE -->
-
-
-                    <!-- DELETE DEVICE -->
-                    <div class="container remove-environ-container" id="remove-env">
-                        <div class="title" onclick="toggleContainer(this, true, true)">
-                            <button class="remove-button">Remover Dispostivo</button> 
-                        </div>
-                        <div class="content remove-environ">
-                            <div class="remove-warning">
-                                Você está prestes a remover <b>{{ name }}</b> da sua conta.<br>
-
-                                Seu identificador é: <b>{{ hash }}</b><br>
-                                <br>
-
-                                Anote o identificador, ele é único e necessário<br>
-                                para recadastrar esse dispositivo em uma conta MON3D.<br>
-                                <br>
-
-                                Para confirmar a exclusão, insira o identificador abaixo:
-                                <input type="text" class="text-entry-remove " placeholder="Identificador">
-
-                                <div class="grid-2x1">
-                                    <button class="remove-button smaller" onclick="toggleContainer(this.parentNode.parentNode.parentNode, true, false)">Cancelar</button> 
-                                    <button class="remove-button smaller">Confirmar</button>       
-                                </div>
-                            </div>        
-                        </div>
-                    </div>
-
-
+        <div class="content">
+            <div class="grid-5x3">
+                <div class="temperature-env">
+                    <h4>Extrusora:</h4>
+                </div>
+                <div class="input-wrapper">
+                    <label>Definir Referência:</label>
+                    <form id="setTempExForm" action="/set-temp-ex" method="POST">
+                        <input type="text" class="text-entry-temp" id="ref-input-ex" placeholder="Ex: 100">
+                    </form>
+                    <span class="unit">°C</span>
+                </div>
+                <div class="input-wrapper">
+                    <label>Referência (&#x25BC;)</label>
+                    <input type="text" class="text-display-temp" value="0" id="text-input-1" readonly>
+                    <span class="unit">°C</span>
+                </div>
+                <div class="input-wrapper">
+                    <label>Leitura (&#x25B2;)</label>
+                    <input type="text" class="text-display-temp" value="0" id="text-input-2" readonly>
+                    <span class="unit">°C</span>
+                </div>
+                <div class="slider-container">
+                    <input type="range" class="slider-temp set-point" min="0" max="300" value="0" step="1" data-target="text-input-1" disabled>
+                    <input type="range" class="slider-temp current" min="0" max="300" value="25" step="1" data-target="text-input-2" disabled>
+                </div>
+                <div class="temperature-env">&nbsp;</div> <!-- blank line -->
+                <div class="temperature-env">
+                    <h4>Mesa Aquecida:</h4>
+                </div>
+                <div class="input-wrapper">
+                    <label>Definir Referência:</label>
+                    <form id="setTempBedForm" action="/set-temp-bed" method="POST">
+                        <input type="text" class="text-entry-temp" id="ref-input-bed" placeholder="Ex: 100">
+                    </form>
+                    <span class="unit">°C</span>
+                </div>
+                <div class="input-wrapper">
+                    <label>Referência (&#x25BC;)</label>
+                    <input type="text" class="text-display-temp" value="0" id="text-input-3" readonly>
+                    <span class="unit">°C</span>
+                </div>
+                <div class="input-wrapper">
+                    <label>Leitura (&#x25B2;)</label>
+                    <input type="text" class="text-display-temp" value="0" id="text-input-4" readonly>
+                    <span class="unit">°C</span>
+                </div>
+                <div class="slider-container">
+                    <input type="range" class="slider-temp set-point" min="0" max="300" data-target="text-input-3" disabled>
+                    <input type="range" class="slider-temp current" min="0" max="300" data-target="text-input-4" disabled>
                 </div>
             </div>
         </div>
+    </div>
+    
+    <!-- CONFIG -->
+    <div class="container"> 
+        <div class="title" onclick="toggleContainer(this)">
+            <h2>&#9650;</h2>
+            <h1>Configurações</h1> 
+        </div>
+        <div class="content">
+            <div class="grid-config">
+                
+                <!-- NAME -->
+                <div class="input-wrapper">
+                    <form method="POST">
+                        <input type="hidden" name="form-type" value="name-form">
+                        <div class="baud-change">
+                            <label style="grid-column: 1 / span 2">Nome do Dispositivo</label>
+                            {{ form.new_name(class="text-entry", style='border-radius: 10px 0 0 10px; padding: 6px 12px 6px 12px') }}
+                            {{ form.submit(class='control-button', style='border-radius: 0 10px 10px 0')}}
+                        </div>
+                    </form>
+                </div>
+                <!-- <label>Nome do Dispositivo</label>
+                {{ form.new_name(class="text-entry") }}-->
 
+                <!-- BAUDRATE -->
+                <div class="input-wrapper">
+                    <form method="POST">
+                        <input type="hidden" name="form-type" value="baudrate-form">
+                        <div class="baud-change">
+                            <label style="grid-column: 1 / span 2">Taxa de Transmissão</label>
+                            {{ form.baudrate(class="text-entry", style='border-radius: 10px 0 0 10px') }}
+                            {{ form.submit(class='control-button', style='border-radius: 0 10px 10px 0')}}
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="horizontal-line" style="height:1px; margin-top:5px; border-top: 1px solid black;"></div>
+
+                <!-- DELETE DEVICE -->
+                <div class="container remove-environ-container" id="remove-env">
+                    <div class="title-remove" onclick="toggleContainer(this, true, true)">
+                        <button class="remove-button">Remover Dispositivo</button>
+                    </div>
+                    <div class="content remove-environ">
+
+                        <div class="remove-warning">
+                            Você está prestes a remover <b>{{ name }}</b> da sua conta.<br>
+
+                            Seu identificador é: <b>{{ hash }}</b><br>
+                            <br>
+
+                            Anote o identificador, ele é único e necessário<br>
+                            para recadastrar esse dispositivo em uma conta MON3D.<br>
+                            <br>
+
+                            Para confirmar a exclusão, insira o identificador abaixo:
+
+                            <form method="POST">
+                                <input type="hidden" name="form-type" value="delete-form">
+
+                                {{ form.delete(id="delete-hash", class="centered-input text-entry-remove", style="width: 100%", placeholder="Identificador")}}
+                                
+                                <div class="grid-2x1">
+                                    <button class="remove-button smaller" type="button"
+                                        style="width: 95%; margin: 10px 20px 0 10px; background-color:rgb(65, 65, 65)" 
+                                        onclick="toggleContainer(this.parentNode.parentNode.parentNode.parentNode, true, false)">Cancelar</button>
+                                    <button class="remove-button smaller" type="submit" style="width: 95%; margin: 10px 10px 0 20px" >Confirmar</button>       
+                                </div>
+                            
+                            </form>
+                        </div>        
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
 
 </div>
@@ -528,6 +560,14 @@ $(document).ready(function() {
           data: { gCode: gCodeValue }, // Envia apenas o valor do campo gCode
         });
       });
+    });
+
+    $(window).on('beforeunload', function() {
+        $.ajax({
+            url: '/stop-streaming',
+            type: 'POST',
+            data: {},
+        });
     });
 
 </script>

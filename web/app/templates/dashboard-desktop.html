@@ -23,7 +23,7 @@
                     </button>
                     <div class="input-wrapper">
                         <label>Status</label>
-                        <input type="text" class="text-entry" value="0" id="status" readonly>
+                        <input type="text" class="text-entry" id="status" readonly>
                     </div>
                     <div class="input-wrapper" style="grid-column: 1 / span 3;">
                         <form id="gcodeForm" action="/personalized" method="POST">
@@ -233,7 +233,7 @@
                     <div class="file-input-container">
                         <form id="fileUpload" method="POST" action="/upload" enctype="multipart/form-data">
                             <button type="submit" id="submit-child" hidden></button>
-                            <input type="file" name="arquivo" id="file-input" class="form-control">
+                            <input type="file" name="arquivo" class="form-control">
                         </form>
                     </div>
 
@@ -504,9 +504,6 @@ $(document).ready(function() {
           data: file,
           processData: false,
           contentType: false,
-          success: function() {
-             $('#file-input').val('');
-            }
         });
       });
     });
@@ -648,6 +645,14 @@ $(document).ready(function() {
             }
         });
       });
+    });
+
+    $(window).on('beforeunload', function() {
+        $.ajax({
+            url: '/stop-streaming',
+            type: 'POST',
+            data: {},
+        });
     });
 
 </script>

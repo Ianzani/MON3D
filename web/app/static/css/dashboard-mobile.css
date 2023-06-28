@@ -1,7 +1,7 @@
 /* ================ MAIN GRID ================ */
 .dashboard-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(1, 1fr);
     margin: 0 10px 0 10px;
     gap: 0px;
 }
@@ -53,17 +53,23 @@
 
 .label-homing-axes {
     font-weight: bolder;
-    font-size: 1.2vw;
+    font-size: 3.6vw;
 }
 
 .grid-general {
     display: grid;
     width: 100%;
-    max-width: calc(33.33vw - 80px);
-    /* aspect-ratio: 5/1; */
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: 60% 40%;
-    gap: 20px;
+    height: auto;
+    grid-template-columns: calc(30%-5px) calc(30%-5px) 40%;
+    grid-template-rows: 60px 50px;
+    margin-bottom: 10px;
+    grid-column-gap: 10px;
+    grid-row-gap: 0;
+}
+
+.general-button {
+    height: 60px;
+    margin-bottom: 10px;
 }
 
 .grid-print-flow {
@@ -135,7 +141,7 @@
     width: 100%;
     height: 100%;
     background-color:rgb(0, 40, 130);
-    font-size: 2vw;
+    font-size: 6vw; /* -------------------------------- */
     font-family: sans-serif;
     font-weight: bold;
     color: white;
@@ -149,7 +155,7 @@
 }
 
 .dir::before {
-    font-size: 2vw;  
+    font-size: 6vw;  
     content: "\25B2";
     top: -5px;
     position: relative;
@@ -173,24 +179,23 @@
 
 .grid-general button {
     font-weight: 500;
-    font-size: 1.3vw;
+    font-size: 3.9vw;
 }
 
 .control-button-icon-big {
-    width: 2vw;
-    min-width: 20px;
+    width: 4vw;
+    min-width: 30px;
     aspect-ratio: 1/1;
-    margin: 10px;
+    margin: 5px;
 }
 
 
 .control-button-icon-small {
-    width: 2vw;
-    max-width: 30px;
+    width: 10vw;
+    max-width: 20px;
     aspect-ratio: 1/1;
-    margin: 10px;
+    margin: 5px;
 }
-
 
 .control-button-icon-smaller {
     width: 1vw;
@@ -215,7 +220,7 @@
     align-items: center;
     justify-content: center;
     padding: 8px 0 8px 0;
-    font-size: 1.1vw;
+    font-size: 3.3vw;
     text-align: center;
     background-color:rgb(0, 60, 150);
     color:white;
@@ -230,7 +235,7 @@
 .segmented-button input[type="radio"]:checked + label {
     background-color:rgb(0, 40, 130);
     font-weight: bolder;
-    font-size: 1.2vw;
+    font-size: 3.6vw;
     border-width: 0 1px 0 1px;
 }
 
@@ -392,7 +397,7 @@ input[type="range"] {
     padding: 5px 0 5px 0;
     margin: 0;
     font-weight: bolder;
-    font-size: 1vw;
+    font-size: 3vw;
     background-color:rgb(200, 0, 0);
     border-color: gray;
     border-radius: 10px;

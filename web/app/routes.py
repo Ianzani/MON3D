@@ -10,6 +10,7 @@ from app.functions import *
 @app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def info():
+    # Devices' protect
     buffer = current_user.current
     if not buffer:
         flash('Sem dispositivos cadastrados.')
@@ -57,16 +58,21 @@ def info():
     else:
         dashboard_page = 'dashboard-desktop.html'
 
+    # Inicialize stream off
+    db.collection(current_user.uid).document(current_user.current).update({'streaming': False, 'updated':'streaming'})
+
     return render_template(dashboard_page, hash=current_user.current, name=name, baud=baudrate, form=form)
 
 #-----------------------------------------------------------------------------------------------------
+# ADMIN ROUTE/ DELETE USERS
 @app.route('/delete', methods=['GET', 'POST'])
 @login_required
 def delete():
+    # Admin validation
     if current_user.id != 1:
         flash('Acesso negado.')
         return redirect(url_for('devices'))
-
+    # Delete user
     form = AdminForm()
     if form.validate_on_submit():
         user = User.query.filter_by(uid=form.uid.data).first()
@@ -88,8 +94,8 @@ def delete():
 @app.route('/devices')
 @login_required
 def devices():
+    # Get device list
     devices = db.collection(current_user.uid).get()
-
     return render_template('devices.html', devices=devices)
 
 #-----------------------------------------------------------------------------------------------------
@@ -98,7 +104,6 @@ def devices():
 @login_required
 def new_device():
     form = NewDeviceForm()
-
     if form.validate_on_submit():
         try:
             db.collection("QueuedRaspberrys").document(form.id.data).update({'user':current_user.uid, 
@@ -131,7 +136,6 @@ def login():
         return redirect(url_for('devices'))
 
     form = LoginForm()
-
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user:
@@ -151,7 +155,6 @@ def new_user():
         return redirect(url_for('devices'))
 
     form = RegisterForm()
-
     if form.validate_on_submit():
         if not User.query.filter_by(email=form.email.data).all():
             password = generate_password_hash(form.password1.data, 'scrypt')
@@ -174,13 +177,13 @@ def new_user():
 def user():
     form_pass = UserFormPassword()
     form_name = UserFormName()
-
+    # Change only name
     if form_name.validate_on_submit():
         if not current_user.name == form_name.name.data:
             current_user.name = form_name.name.data
             dbUser.session.commit()
             flash('Nome alterado com sucesso.')
-
+    # Change only password
     if form_pass.validate_on_submit():
         if check_password_hash(current_user.password_hash, form_pass.old_password.data):
             current_user.password_hash = generate_password_hash(form_pass.new_password.data, 'scrypt')
@@ -188,6 +191,7 @@ def user():
             flash('Senha alterada com sucesso.')
         else:
             flash('Senha antiga inválida.')
+
     return render_template('user.html', 
                            form_pass=form_pass, 
                            form_name=form_name, 
@@ -233,7 +237,7 @@ def get_temp():
     temp_ex_ref = temp.to_dict()['hotend']['setpoint']
     temp_bed_ref = temp.to_dict()['heatbed']['setpoint']
     status = temp.to_dict()['status']
-    delay = 1000
+    delay = 60000
 
     if status == 'ready':
         status = 'Pronto'
@@ -375,6 +379,16 @@ def stop():
     return ''
 
 #-----------------------------------------------------------------------------------------------------
+#STOP STREAMING WHEN CLOSED
+@app.route('/stop-streaming', methods=['POST'])
+@login_required
+def stop_streaming():
+
+    db.collection(current_user.uid).document(current_user.current).update({'streaming': False, 'updated':'streaming'})
+
+    return ''
+
+#-----------------------------------------------------------------------------------------------------
 #STREAMING VIEW CONTROLLER
 @app.route('/toggle-streaming')
 @login_required
@@ -399,6 +413,5 @@ def upload():
                     blob.upload_from_filename("files/" + arquivo.filename)
                     os.remove("./files/" + arquivo.filename)
     return ''
-
 
 #=====================================================================================================
