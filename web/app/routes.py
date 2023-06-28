@@ -237,7 +237,7 @@ def get_temp():
     temp_ex_ref = temp.to_dict()['hotend']['setpoint']
     temp_bed_ref = temp.to_dict()['heatbed']['setpoint']
     status = temp.to_dict()['status']
-    delay = 60000
+    delay = 2000
 
     if status == 'ready':
         status = 'Pronto'

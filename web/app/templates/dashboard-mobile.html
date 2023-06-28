@@ -71,9 +71,7 @@
                 </div>
                 <div class="cell">
                     <button class="control-button" id="submit-parent" style="position: relative;">
-                        <img class="control-button-icon-big" 
-                        style="width: 3vw; position: absolute; transform: translate(5%, -5%);" 
-                        src="{{url_for('static', filename='images/upload.svg')}}">
+                        <img class="control-button-icon-big" src="{{url_for('static', filename='images/upload.svg')}}">
                     </button>
                 </div>
                 <div class="file-input-container">
@@ -132,7 +130,7 @@
             </div>
             <div class="homing">
                 <div class="cell">
-                    <button class="control-button" style="border-radius: 10px 10px 0 0;" id="stop" onclick="default_commands('A', 'homing')">
+                    <button class="control-button" style="border-radius: 2vw 2vw 0 0;" id="stop" onclick="default_commands('A', 'homing')">
                         <img class="control-button-icon-big" src="{{url_for('static', filename='images/home-0.svg')}}">
                     </button>    
                 </div>
@@ -147,7 +145,7 @@
                     </button> 
                 </div>
                 <div class="cell distorted">
-                    <button class="control-button label-homing-axes" style="border-radius: 0 0 10px 10px;" id="stop" onclick="default_commands('Z', 'homing')">
+                    <button class="control-button label-homing-axes" style="border-radius: 0 0 2vw 2vw;" id="stop" onclick="default_commands('Z', 'homing')">
                         Z
                     </button>    
                 </div>
@@ -184,21 +182,21 @@
                     <h4>Extrusora:</h4>
                 </div>
                 <div class="input-wrapper">
-                    <label>Definir Referência:</label>
+                    <label>Definir:</label>
                     <form id="setTempExForm" action="/set-temp-ex" method="POST">
                         <input type="text" class="text-entry-temp" id="ref-input-ex" placeholder="Ex: 100">
                     </form>
-                    <span class="unit">°C</span>
+                    <!-- <span class="unit">°C</span> -->
                 </div>
                 <div class="input-wrapper">
-                    <label>Referência (&#x25BC;)</label>
+                    <label>Ref (&#x25BC;)</label>
                     <input type="text" class="text-display-temp" value="0" id="text-input-1" readonly>
-                    <span class="unit">°C</span>
+                    <!-- <span class="unit">°C</span> -->
                 </div>
                 <div class="input-wrapper">
-                    <label>Leitura (&#x25B2;)</label>
+                    <label>Atual (&#x25B2;)</label>
                     <input type="text" class="text-display-temp" value="0" id="text-input-2" readonly>
-                    <span class="unit">°C</span>
+                    <!-- <span class="unit">°C</span> -->
                 </div>
                 <div class="slider-container">
                     <input type="range" class="slider-temp set-point" min="0" max="300" value="0" step="1" data-target="text-input-1" disabled>
@@ -209,21 +207,21 @@
                     <h4>Mesa Aquecida:</h4>
                 </div>
                 <div class="input-wrapper">
-                    <label>Definir Referência:</label>
+                    <label>Definir:</label>
                     <form id="setTempBedForm" action="/set-temp-bed" method="POST">
                         <input type="text" class="text-entry-temp" id="ref-input-bed" placeholder="Ex: 100">
                     </form>
-                    <span class="unit">°C</span>
+                    <!-- <span class="unit">°C</span> -->
                 </div>
                 <div class="input-wrapper">
-                    <label>Referência (&#x25BC;)</label>
+                    <label>Ref (&#x25BC;)</label>
                     <input type="text" class="text-display-temp" value="0" id="text-input-3" readonly>
-                    <span class="unit">°C</span>
+                    <!-- <span class="unit">°C</span> -->
                 </div>
                 <div class="input-wrapper">
-                    <label>Leitura (&#x25B2;)</label>
+                    <label>Atual (&#x25B2;)</label>
                     <input type="text" class="text-display-temp" value="0" id="text-input-4" readonly>
-                    <span class="unit">°C</span>
+                    <!-- <span class="unit">°C</span> -->
                 </div>
                 <div class="slider-container">
                     <input type="range" class="slider-temp set-point" min="0" max="300" data-target="text-input-3" disabled>
@@ -271,41 +269,40 @@
                 <div class="horizontal-line" style="height:1px; margin-top:5px; border-top: 1px solid black;"></div>
 
                 <!-- DELETE DEVICE -->
-                <div class="container remove-environ-container" id="remove-env">
+                <div class="container remove-environ-container" style="border-radius: 1.5vw;" id="remove-env">
                     <div class="title-remove" onclick="toggleContainer(this, true, true)">
-                        <button class="remove-button">Remover Dispositivo</button>
+                        <button class="remove-button" style="border-radius: 1.5vw;"> Remover Dispositivo</button>
                     </div>
                     <div class="content remove-environ">
 
                         <div class="remove-warning">
-                            Você está prestes a remover <b>{{ name }}</b> da sua conta.<br>
+                            Você está prestes a remover <b>{{ name }}</b>. <br>
 
+                            <br>
                             Seu identificador é: <b>{{ hash }}</b><br>
                             <br>
 
-                            Anote o identificador, ele é único e necessário<br>
+                            Anote o identificador, ele é único e necessário
                             para recadastrar esse dispositivo em uma conta MON3D.<br>
                             <br>
 
                             Para confirmar a exclusão, insira o identificador abaixo:
+                        </div>    
+                        
+                        <form method="POST" style="display: block;">
+                            <input type="hidden" style="height: max-content" name="form-type" value="delete-form">
 
-                            <form method="POST">
-                                <input type="hidden" name="form-type" value="delete-form">
-
-                                {{ form.delete(id="delete-hash", class="centered-input text-entry-remove", style="width: 100%", placeholder="Identificador")}}
-                                
-                                <div class="grid-2x1">
-                                    <button class="remove-button smaller" type="button"
-                                        style="width: 95%; margin: 10px 20px 0 10px; background-color:rgb(65, 65, 65)" 
-                                        onclick="toggleContainer(this.parentNode.parentNode.parentNode.parentNode, true, false)">Cancelar</button>
-                                    <button class="remove-button smaller" type="submit" style="width: 95%; margin: 10px 10px 0 20px" >Confirmar</button>       
-                                </div>
+                            {{ form.delete(id="delete-hash", class="centered-input text-entry-remove", style="width: 100%", placeholder="Identificador")}}
                             
-                            </form>
-                        </div>        
+                            <div class="grid-2x1">
+                                <button class="remove-button smaller" type="button"
+                                    style="width: 95%; margin: 10px 20px 0 10px; background-color:rgb(65, 65, 65)" 
+                                    onclick="toggleContainer(this.parentNode.parentNode.parentNode, true, false)">Cancelar</button>
+                                <button class="remove-button smaller" type="submit" style="width: 95%; margin: 10px 10px 0 20px" >Confirmar</button>       
+                            </div>
+                        </form>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -313,263 +310,323 @@
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    var fileInput = document.getElementById('fileInput');
-    var customFileLabel = document.querySelector('.custom-file-label');
+
+    document.getElementById("delete-hash").addEventListener("keydown", function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault(); // Prevent form submission
+        }
+    });
     
-    fileInput.addEventListener('change', function() {
-        var fileName = this.value.split('\\').pop(); // Extracts the filename from the file path
-        customFileLabel.innerText = fileName || 'arquivo.gcode'; // Sets the label text to the filename or 'arquivo.gcode'
+    document.addEventListener('DOMContentLoaded', function() {
+        var fileInput = document.getElementById('fileInput');
+        var customFileLabel = document.querySelector('.custom-file-label');
+        
+        fileInput.addEventListener('change', function() {
+            var fileName = this.value.split('\\').pop(); // Extracts the filename from the file path
+            customFileLabel.innerText = fileName || 'arquivo.gcode'; // Sets the label text to the filename or 'arquivo.gcode'
+        });
     });
-});
-
-const button1 = document.getElementById('submit-parent');
-const button2 = document.getElementById('submit-child');
-
-button1.addEventListener('click', function() {
-  button2.click();
-});
-
-//WRITABLE TEXT INPUTS - DELETE AFTER DONE
-var elements = document.querySelectorAll('.text-entry-temp');
-
-elements.forEach(function(element) {
-    element.addEventListener('keypress', function(event) {
-    if (event.key === 'Enter') {
-        event.target.value = '';
-    }
+    
+    const button1 = document.getElementById('submit-parent');
+    const button2 = document.getElementById('submit-child');
+    
+    button1.addEventListener('click', function() {
+      button2.click();
     });
-});
-
-//TEMPERATURE MANAGER
-const sliders = document.querySelectorAll(".slider-temp");
-const textInputs = document.querySelectorAll(".text-display-temp");
-
-textInputs.forEach(function(textInput) {
-    textInput.addEventListener("input", function() {
-    const value = textInput.value;
-    const targetId = textInput.id;
-    updateSliderValue(value, targetId);
-    });
-});
-
-function updateSliderValue(value, targetId) {
-    const slider = document.querySelector(`[data-target="${targetId}"]`);
-
-    if (slider) {
-        slider.value = value;
-    }
-}
-
-function updateAllSliderValues() {
+    
+    //WRITABLE TEXT INPUTS - DELETE AFTER DONE
+    // var elements = document.querySelectorAll('.text-entry-temp');
+    
+    // elements.forEach(function(element) {
+    //     element.addEventListener('keypress', function(event) {
+    //     if (event.key === 'Enter') {
+    //         event.target.value = '';
+    //     }
+    //     });
+    // });
+    
+    //TEMPERATURE MANAGER
+    const sliders = document.querySelectorAll(".slider-temp");
+    const textInputs = document.querySelectorAll(".text-display-temp");
+    
     textInputs.forEach(function(textInput) {
-    const value = textInput.value;
-    const targetId = textInput.id;
-    updateSliderValue(value, targetId);
+        textInput.addEventListener("input", function() {
+        const value = textInput.value;
+        const targetId = textInput.id;
+        updateSliderValue(value, targetId);
+        });
     });
-}
-
-
-//TEXT INPUT TEMPERATURE
-const numberInputs = document.querySelectorAll('.text-display-temp[type="text"]');
-
-numberInputs.forEach(function(numberInput) {
-  numberInput.addEventListener("input", function() {
-    // Remove any non-digit characters from the input value
-    numberInput.value = numberInput.value.replace(/\D/g, '');
-  });
-});
-
-
-// Retractable Container Function
-function toggleContainer(title, forceState = false, value = false) {
-    const container = title.parentNode;
     
-    if (forceState) {
-        if (value) {
-            container.classList.add('open');
+    function updateSliderValue(value, targetId) {
+        const slider = document.querySelector(`[data-target="${targetId}"]`);
+    
+        if (slider) {
+            slider.value = value;
+        }
+    }
+    
+    function updateAllSliderValues() {
+        textInputs.forEach(function(textInput) {
+        const value = textInput.value;
+        const targetId = textInput.id;
+        updateSliderValue(value, targetId);
+        });
+    }
+    
+    
+    //TEXT INPUT TEMPERATURE
+    const numberInputs = document.querySelectorAll('.text-display-temp[type="text"]');
+    
+    numberInputs.forEach(function(numberInput) {
+      numberInput.addEventListener("input", function() {
+        // Remove any non-digit characters from the input value
+        numberInput.value = numberInput.value.replace(/\D/g, '');
+      });
+    });
+    
+    
+    // Retractable Container Function
+    function toggleContainer(title, forceState = false, value = false) {
+        const container = title.parentNode;
+        
+        if (forceState) {
+            if (value) {
+                container.classList.add('open');
+            }
+            else {
+                container.classList.remove('open');
+            }
         }
         else {
-            container.classList.remove('open');
+            container.classList.toggle('open');
+        }
+    
+        if (container.id == 'stream-toggle') {
+            $.ajax({
+                    type: 'GET', // Método HTTP (pode ser POST ou GET, dependendo do seu caso)
+                    url: '/toggle-streaming', // URL para onde enviar os dados
+                });
         }
     }
-    else {
-        container.classList.toggle('open');
+    
+    // Movement base radio buttons
+    function getMovementStep() {
+        const radioButtons = document.getElementsByName("mov-step");
+        for (let i = 0; i < radioButtons.length; i++) {
+            if (radioButtons[i].checked) {
+                const selectedValue = radioButtons[i].value;
+                return selectedValue;
+                // console.log("Selected value: " + selectedValue);
+                // break;
+            }
+        }
     }
-
-    if (container.id == 'stream-toggle') {
-        $.ajax({
-                type: 'GET', // Método HTTP (pode ser POST ou GET, dependendo do seu caso)
-                url: '/toggle-streaming', // URL para onde enviar os dados
+    
+    
+    // Video Streaming
+    const create = () => {
+    
+        var videoIndex = 'http://igbt.eesc.usp.br:8888/123/index.m3u8'
+            
+        const video = document.getElementById('video');
+    
+        // always prefer hls.js over native HLS.
+        // this is because some Android versions support native HLS
+        // but don't support fMP4s.
+        if (Hls.isSupported()) {
+            const hls = new Hls({
+                maxLiveSyncPlaybackRate: 1.5,
             });
-    }
-}
-
-// Movement base radio buttons
-function getMovementStep() {
-    const radioButtons = document.getElementsByName("mov-step");
-    for (let i = 0; i < radioButtons.length; i++) {
-        if (radioButtons[i].checked) {
-            const selectedValue = radioButtons[i].value;
-            return selectedValue;
-            // console.log("Selected value: " + selectedValue);
-            // break;
+    
+            hls.on(Hls.Events.ERROR, (evt, data) => {
+                if (data.fatal) {
+                    hls.destroy();
+    
+                    setTimeout(create, 2000);
+                }
+            });
+    
+            hls.loadSource(videoIndex);
+            hls.attachMedia(video);
+    
+            video.play();
+    
+        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            // since it's not possible to detect timeout errors in iOS,
+            // wait for the playlist to be available before starting the stream
+            fetch(videoIndex)
+                .then(() => {
+                    video.src = videoIndex;
+                    video.play();
+                });
         }
-    }
-}
-
-
-// Video Streaming
-const create = () => {
-
-    var videoIndex = 'http://igbt.eesc.usp.br:8888/123/index.m3u8'
-		
-    const video = document.getElementById('video');
-
-	// always prefer hls.js over native HLS.
-	// this is because some Android versions support native HLS
-	// but don't support fMP4s.
-	if (Hls.isSupported()) {
-		const hls = new Hls({
-			maxLiveSyncPlaybackRate: 1.5,
-		});
-
-		hls.on(Hls.Events.ERROR, (evt, data) => {
-			if (data.fatal) {
-				hls.destroy();
-
-				setTimeout(create, 2000);
-			}
-		});
-
-		hls.loadSource(videoIndex);
-		hls.attachMedia(video);
-
-		video.play();
-
-	} else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-		// since it's not possible to detect timeout errors in iOS,
-		// wait for the playlist to be available before starting the stream
-		fetch(videoIndex)
-			.then(() => {
-				video.src = videoIndex;
-				video.play();
-			});
-	}
-};
-
-window.addEventListener('DOMContentLoaded', create);
-
-// ALTERAÇÕES ============================================================================
-$(document).ready(function() {
-      $('#fileUpload').submit(function(e) {
-        e.preventDefault(); // Impede o envio padrão do formulário
-        
-        var file = new FormData(this);
-        
-        $.ajax({
-          type: 'POST', // Método HTTP (pode ser POST ou GET, dependendo do seu caso)
-          url: '/upload', // URL para onde enviar os dados
-          data: file,
-          processData: false,
-          contentType: false,
-        });
-      });
-    });
-
+    };
+    
+    window.addEventListener('DOMContentLoaded', create);
+    
+    // ALTERAÇÕES ============================================================================
     $(document).ready(function() {
-      const disp_temp_ex = $('#text-input-2');
-      const disp_temp_bed = $('#text-input-4');
-      let delay = 5000;
-
-      function fazerRequisicaoGET() {
-
-        $.get('/get-temp', function(data) {
-          const temp_ex = new URLSearchParams(data).get('temp_ex');
-          const temp_bed = new URLSearchParams(data).get('temp_bed');
-          const newDelay = parseInt(new URLSearchParams(data).get('delay'));
-          disp_temp_ex.val(`${temp_ex}`);
-          disp_temp_bed.val(`${temp_bed}`);
-          delay = newDelay
-
-          updateAllSliderValues();
-
-        }).fail(function(error) {
-          console.error('Erro ao fazer a requisição:', error);
-        }).always(function() {
-            setTimeout(fazerRequisicaoGET, delay);
+          $('#fileUpload').submit(function(e) {
+            e.preventDefault(); // Impede o envio padrão do formulário
+            
+            var file = new FormData(this);
+            
+            $.ajax({
+              type: 'POST', // Método HTTP (pode ser POST ou GET, dependendo do seu caso)
+              url: '/upload', // URL para onde enviar os dados
+              data: file,
+              processData: false,
+              contentType: false,
+            });
+          });
         });
-      }
-      // Executar a função inicialmente
-      fazerRequisicaoGET();
-      setTimeout(function(){
-        updateAllSliderValues();  
-      }, 100);
-      
-    });
-
-
-    function position(value, step) {
-      $.ajax({
-      type: 'POST',
-      url: '/position',
-      data: {value : value, step : step},
-      });
-    }
-
-    function start() {
-      $.ajax({
-      type: 'GET',
-      url: '/start',
-      });
-    }
-    function connect() {
-      $.ajax({
-      type: 'GET',
-      url: '/connect',
-      });
-    }
-    function disconnect() {
-      $.ajax({
-      type: 'GET',
-      url: '/disconnect',
-      });
-    }
-    function pause() {
-      $.ajax({
-      type: 'GET',
-      url: '/pause',
-      });
-    }
-    function stop() {
-      $.ajax({
-      type: 'GET',
-      url: '/stop',
-      });
-    }
-
-    $(document).ready(function() {
-      $('#gcodeForm').submit(function(e) {
-        e.preventDefault(); // Impede o envio padrão do formulário
-        
-        var gCodeValue = $('#command').val(); // Obtém o valor do campo gCode
-        
-        $.ajax({
-          type: 'POST', // Método HTTP (pode ser POST ou GET, dependendo do seu caso)
-          url: $(this).attr('action'), // URL para onde enviar os dados
-          data: { gCode: gCodeValue }, // Envia apenas o valor do campo gCode
+    
+        $(document).ready(function() {
+          const disp_temp_ex = $('#text-input-2');
+          const disp_temp_bed = $('#text-input-4');
+          const disp_temp_ex_ref = $('#text-input-1');
+          const disp_temp_bed_ref = $('#text-input-3');
+          const disp_status = $('#status');
+          let delay = 5000;
+    
+          function fazerRequisicaoGET() {
+    
+            $.get('/get-temp', function(data) {
+              const temp_ex = new URLSearchParams(data).get('temp_ex');
+              const temp_bed = new URLSearchParams(data).get('temp_bed');
+              const temp_ex_ref = new URLSearchParams(data).get('temp_ex_ref');
+              const temp_bed_ref = new URLSearchParams(data).get('temp_bed_ref');
+              const status = new URLSearchParams(data).get('status');
+              const newDelay = parseInt(new URLSearchParams(data).get('delay'));
+              disp_temp_ex.val(`${temp_ex} °C`);
+              disp_temp_bed.val(`${temp_bed} °C`);
+              disp_temp_ex_ref.val(`${temp_ex_ref} °C`);
+              disp_temp_bed_ref.val(`${temp_bed_ref} °C`);
+              delay = newDelay
+    
+            if (status !== 'None') {
+                disp_status.val(`${status}`);
+            }
+    
+              updateAllSliderValues();
+    
+            }).fail(function(error) {
+              console.error('Erro ao fazer a requisição:', error);
+            }).always(function() {
+                setTimeout(fazerRequisicaoGET, delay);
+            });
+          }
+          // Executar a função inicialmente
+          fazerRequisicaoGET();
+          setTimeout(function(){
+            updateAllSliderValues();  
+          }, 100);
+          
         });
-      });
-    });
-
-    $(window).on('beforeunload', function() {
-        $.ajax({
-            url: '/stop-streaming',
-            type: 'POST',
-            data: {},
+    
+        function position(value, step) {
+          $.ajax({
+          type: 'POST',
+          url: '/position',
+          data: {value : value, step : step},
+          });
+        }
+        function default_commands(value, command) {
+          $.ajax({
+          type: 'POST',
+          url: '/default-commands',
+          data: {value : value, command: command},
+          });
+        }
+        function start() {
+          $.ajax({
+          type: 'GET',
+          url: '/start',
+          });
+        }
+        function connect() {
+          $.ajax({
+          type: 'GET',
+          url: '/connect',
+          });
+        }
+        function disconnect() {
+          $.ajax({
+          type: 'GET',
+          url: '/disconnect',
+          });
+        }
+        function pause() {
+          $.ajax({
+          type: 'GET',
+          url: '/pause',
+          });
+        }
+        function stop() {
+          $.ajax({
+          type: 'GET',
+          url: '/stop',
+          });
+        }
+    
+        $(document).ready(function() {
+          $('#gcodeForm').submit(function(e) {
+            e.preventDefault(); // Impede o envio padrão do formulário
+            
+            var gCodeValue = $('#command').val(); // Obtém o valor do campo gCode
+            
+            $.ajax({
+              type: 'POST', // Método HTTP (pode ser POST ou GET, dependendo do seu caso)
+              url: $(this).attr('action'), // URL para onde enviar os dados
+              data: { gCode: gCodeValue },
+              success: function() {
+                 $('#command').val('');
+                }
+            });
+          });
         });
-    });
-
-</script>
+    
+        $(document).ready(function() {
+          $('#setTempExForm').submit(function(e) {
+            e.preventDefault(); // Impede o envio padrão do formulário
+            
+            var setTempEx = $('#ref-input-ex').val(); // Obtém o valor do campo gCode
+    
+            $.ajax({
+              type: 'POST', // Método HTTP (pode ser POST ou GET, dependendo do seu caso)
+              url: $(this).attr('action'), // URL para onde enviar os dados
+              data: { setTempEx: setTempEx },
+              success: function() {
+                 $('#ref-input-ex').val('');
+                }
+            });
+          });
+        });
+    
+        $(document).ready(function() {
+            $('#setTempBedForm').submit(function(e) {
+            e.preventDefault(); // Impede o envio padrão do formulário
+            
+            var setTempBed = $('#ref-input-bed').val(); // Obtém o valor do campo gCode
+    
+            $.ajax({
+              type: 'POST', // Método HTTP (pode ser POST ou GET, dependendo do seu caso)
+              url: $(this).attr('action'), // URL para onde enviar os dados
+              data: { setTempBed: setTempBed },
+              success: function() {
+                 $('#ref-input-bed').val('');
+                }
+            });
+          });
+        });
+    
+        $(window).on('beforeunload', function() {
+            $.ajax({
+                url: '/stop-streaming',
+                type: 'POST',
+                data: {},
+            });
+        });
+    </script>
 
 {% endblock %}
