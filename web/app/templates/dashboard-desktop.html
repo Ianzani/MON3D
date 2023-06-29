@@ -233,7 +233,7 @@
                     <div class="file-input-container">
                         <form id="fileUpload" method="POST" action="/upload" enctype="multipart/form-data">
                             <button type="submit" id="submit-child" hidden></button>
-                            <input type="file" name="arquivo" class="form-control">
+                            <input id="file_input" type="file" name="arquivo" class="form-control">
                         </form>
                     </div>
 
@@ -504,6 +504,9 @@ $(document).ready(function() {
           data: file,
           processData: false,
           contentType: false,
+          success: function() {
+             $('#file_input').val('');
+            }
         });
       });
     });
