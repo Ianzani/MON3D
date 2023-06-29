@@ -23,7 +23,7 @@
                     </button>
                     <div class="input-wrapper">
                         <label>Status</label>
-                        <input type="text" class="text-entry" id="status" readonly>
+                        <input type="text" class="text-entry" id="status" value="Desconectado" readonly>
                     </div>
                     <div class="input-wrapper" style="grid-column: 1 / span 3;">
                         <form id="gcodeForm" action="/personalized" method="POST">
@@ -453,7 +453,7 @@ function getMovementStep() {
 // Video Streaming
 const create = () => {
 
-    var videoIndex = 'http://igbt.eesc.usp.br:8888/123/index.m3u8'
+    var videoIndex = 'http://igbt.eesc.usp.br:8888/{{current_user.current}}/index.m3u8'
 		
     const video = document.getElementById('video');
 
