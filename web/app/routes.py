@@ -87,7 +87,8 @@ def delete():
             flash('Usuário deletado com sucesso.')
 
     form.uid.data = ''
-    return render_template('admin.html', form=form)
+    users = User.query.order_by(User.id)
+    return render_template('admin.html', form=form, users=users)
 
 #-----------------------------------------------------------------------------------------------------
 #REGISTERED DEVICES
@@ -415,3 +416,13 @@ def upload():
     return ''
 
 #=====================================================================================================
+
+# @app.route('/delete-all')
+# def delete_all():
+#     users = User.query.order_by(User.id)
+#     for user in users:
+#         dbUser.session.delete(user)
+#         dbUser.session.commit()
+
+#     flash('DELETADO')
+#     return redirect(url_for('login'))

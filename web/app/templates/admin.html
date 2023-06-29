@@ -16,4 +16,11 @@
         </form>
     </div>
 
+    <ul>
+        <br><br>
+    {% for user in users %}
+    <li>ID: {{user.id}} - EMAIL: {{user.email}} - NOME: {{user.name}}</li>
+    {% endfor %}
+    </ul>
+
 {% endblock %}
