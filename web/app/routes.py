@@ -11,7 +11,7 @@ from app.functions import *
 @login_required
 def info():
     # Devices' protect
-    buffer = current_user.current
+    buffer = db.collection(current_user.uid).get()
     if not buffer:
         flash('Sem dispositivos cadastrados.')
         return redirect(url_for('devices'))
