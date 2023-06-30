@@ -11,15 +11,17 @@ from app.functions import *
 @login_required
 def info():
     # Devices' protect
-    buffer = db.collection(current_user.uid).get()
-    if not buffer:
+    #buffer = current_user.current #db.collection(current_user.uid).get()
+    if not db.collection(current_user.uid).get():
         flash('Sem dispositivos cadastrados.')
         return redirect(url_for('devices'))
-    current_user.current = str(request.form.get("deviceId"))
-    if current_user.current != 'None':
-        dbUser.session.commit()
-    else:
+
+    buffer = str(request.form.get("deviceId"))
+    if buffer != 'None':
         current_user.current = buffer
+        dbUser.session.commit()
+    elif not current_user.current:
+        return redirect(url_for('devices'))
 
     # Name and baurate change
     form = SettingsForm()
@@ -44,6 +46,8 @@ def info():
         elif form_type == 'delete-form':
             if form.delete.data == current_user.current:
                 db.collection(current_user.uid).document(current_user.current).delete()
+                current_user.current = None
+                dbUser.session.commit()
                 flash('Dispositivo removido com sucesso.')
                 return redirect(url_for('devices'))
 
