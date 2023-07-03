@@ -130,7 +130,13 @@ def new_device():
 @app.route('/')
 @app.route('/home')
 def home():
-    return render_template('home.html')
+    user_agent = request.headers.get('User-Agent')
+
+    if 'Mobile' in user_agent:
+        home_page = 'home-mobile.html'
+    else:
+        home_page = 'home.html'
+    return render_template(home_page)
 
 #-----------------------------------------------------------------------------------------------------
 #LOGIN
