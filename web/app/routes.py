@@ -318,12 +318,11 @@ def position():
 
 #-----------------------------------------------------------------------------------------------------
 #SET TEMP EXT
-@app.route('/set-temp-ex', methods=['POST'])
+@app.route('/set-temp-hotend', methods=['POST'])
 @login_required
 def set_temp_ex():
     if get_status() in ['ready', 'paused']:
         setTempEx = request.form.get("setTempEx")
-        print(setTempEx)
         if setTempEx:
             db.collection(current_user.uid).document(current_user.current).update({'command':f'M104 S{setTempEx}',
                                                                                     'updated' : 'command'})
