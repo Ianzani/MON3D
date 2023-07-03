@@ -278,8 +278,7 @@ def get_temp():
 @login_required
 def logout():
     logout_user()
-    flash("Logout feito com sucesso.")
-    return redirect(url_for('login'))
+    return redirect(url_for('home'))
 
 #-----------------------------------------------------------------------------------------------------
 #PAUSE PRINTING
