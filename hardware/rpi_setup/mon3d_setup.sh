@@ -8,7 +8,8 @@ AP_PSWD="12345678"
 #AP_IP="10.42.0.1/24"
 
 ### Folder ###
-cp -r ./mon3d /
+cp -r ../boot /mon3d/boot/
+cp -r ../controller /mon3d/controller/
 
 ### Boot ###
 cp /mon3d/boot/mon3d.service /etc/systemd/system/
@@ -35,5 +36,6 @@ nmcli con modify "Hotspot" connection.autoconnect-priority -1
 ### Extra ###
 apt install ffmpeg -y
 chmod +x /mon3d/boot/mon3d_wifi.sh
+chmod +x /mon3d/controller/resources/stream.sh
 apt autoremove
 apt clean
