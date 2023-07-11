@@ -1,10 +1,10 @@
 from flask import Flask, render_template, request
-from system import System
 import sys
 import os
 import lgpio
 
 sys.path.insert(0, '/mon3d/controller')
+from system import System
 
 if not System.has_data_log():
     System.create_data_log()
