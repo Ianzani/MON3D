@@ -1,0 +1,27 @@
+Database 'status' Attribute
+
+Offline: (does not reach database)
+(N) 'terminated'        : Internal status, device deleted from database
+
+Feedback: (writen on the database by the printer)
+(R) 'idle'              : Raspberry ready, waiting confirmation to connect to printer
+(R) 'ready'             : Printer connected, awaiting commands
+(R) 'busy'              : Printer is running a custom command
+(R) 'printing'          : Print in progress
+(R) 'paused'            : Print paused
+
+****(R) 'failed'            : Raspberry failed to connect to printer
+
+Command: (written on the database by the user)
+(W) 'start-print'       : Download file from database and start print
+(W) 'pause-print'       : Pauses printing process
+(W) 'resume-print'      : Resumes printing process
+(W) 'stop-print'        : Cancel current print process
+(W) 'boot'              : Try and connect to the printer
+(W) 'disconnect'        : Disconnect Raspberry from printer
+
+Changes not allowed: (before -> after)
+1- printing -> disconnect
+
+
+
