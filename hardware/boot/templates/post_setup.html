@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            margin: 30px 0 0 0;
+            padding: 0;
+            background-color: rgb(230, 230, 236);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+
+    <link rel="stylesheet" href="/static/style.css"/>
+</head>
+<body>
+
+    <div class='main-container'>
+
+        <div class="logo-container">
+            <img src="{{url_for('static', filename='MON3D.svg')}}">
+        </div>
+
+        <h3>Identificador MON3D</h3>
+        <div style="padding: 0 30px 0 30px; margin-bottom: 10px">
+            Copie seu identificador, ele é unico e necessário para<br>
+            cadastrar esse dispositivo na sua conta MON3D.<br>
+            Acesse <b>http://mon3d.igbt.eesc.usp.br</b> para se cadastrar.
+        </div>  
+
+        <div class="input-container">
+
+            <div class="input-wrapper">
+                <!-- <label for="pswd">ID:</label> -->
+                <input type="text" id="pwsd1" name="pswd" class="text-entry" style="text-align: center" value="{{ device_id }}" readonly>
+            </div>
+            <button id="copyButton" class="submit-button" onclick="triggerCopy()">
+                Copiar
+            </button>
+
+            <div class="horizontal-line" style="height:1px; margin: 20px 0 20px 0; border-top: 2px solid black;"></div>
+        
+        </div>
+        
+        <h3>Configuração do Wi-Fi</h3>
+        <div style="padding: 0 30px 0 30px; margin-bottom: 20px;">
+            Tentando se conectar à rede Wi-Fi...<br>
+            Acompanhe o estado da rede através do LED.<br><br>
+            LED Piscando: configurar ponto de acesso.<br>
+            LED Ligado: sistema conectado à internet.
+        </div> 
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
