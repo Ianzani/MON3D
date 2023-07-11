@@ -1,0 +1,10 @@
+[Unit]
+Description=MON3D
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/mon3d/boot/mon3d_init.sh
+
+[Install]
+WantedBy=multi-user.target
