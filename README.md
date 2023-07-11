@@ -36,11 +36,11 @@ sudo apt install git
 ```
 Na sequência, use o comando abaixo para baixar os arquivos do sistema **MON3D** para sua placa RPi:
 ```
-cd ~ && git clone https://github.com/LDFranck/MON3D-RPi
+cd ~ && git clone https://github.com/Ianzani/MON3D
 ```
 Uma vez finalizado o download, execute o script de configuração `mon3d_setup.sh` com o comando:
 ```
-cd ~/MON3D-RPi/ && sudo chmod +x mon3d_setup.sh && sudo ./mon3d_setup.sh
+cd ~/MON3D/hardware/rpi_setup/ && sudo chmod +x mon3d_setup.sh && sudo ./mon3d_setup.sh
 ```
 ✅ Pronto!
 
