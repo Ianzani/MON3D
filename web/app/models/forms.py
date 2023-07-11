@@ -38,7 +38,6 @@ class NewDeviceForm(FlaskForm):
     submit = SubmitField("Adicionar")
 
 class UserFormPassword(FlaskForm):
-    #name = StringField("Nome", validators=[DataRequired(), Length(max=25)])
     old_password = PasswordField("Senha antiga")
     new_password = PasswordField("Nova senha", validators=[Length(min=8)])
     new_password2 = PasswordField("Confirmação de senha", 

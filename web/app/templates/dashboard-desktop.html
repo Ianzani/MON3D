@@ -492,15 +492,16 @@ const create = () => {
 window.addEventListener('DOMContentLoaded', create);
 
 // ALTERAÇÕES ============================================================================
+// Send GCode File
 $(document).ready(function() {
       $('#fileUpload').submit(function(e) {
-        e.preventDefault(); // Impede o envio padrão do formulário
+        e.preventDefault(); 
         
         var file = new FormData(this);
         
         $.ajax({
-          type: 'POST', // Método HTTP (pode ser POST ou GET, dependendo do seu caso)
-          url: '/upload', // URL para onde enviar os dados
+          type: 'POST', 
+          url: '/upload', 
           data: file,
           processData: false,
           contentType: false,
@@ -510,7 +511,7 @@ $(document).ready(function() {
         });
       });
     });
-
+    // Update Temperatures and Status
     $(document).ready(function() {
       const disp_temp_ex = $('#text-input-2');
       const disp_temp_bed = $('#text-input-4');
@@ -546,7 +547,6 @@ $(document).ready(function() {
             setTimeout(fazerRequisicaoGET, delay);
         });
       }
-      // Executar a função inicialmente
       fazerRequisicaoGET();
       setTimeout(function(){
         updateAllSliderValues();  
@@ -598,16 +598,16 @@ $(document).ready(function() {
       url: '/stop',
       });
     }
-
+    // Send Personalized GCode
     $(document).ready(function() {
       $('#gcodeForm').submit(function(e) {
-        e.preventDefault(); // Impede o envio padrão do formulário
+        e.preventDefault(); 
         
-        var gCodeValue = $('#command').val(); // Obtém o valor do campo gCode
+        var gCodeValue = $('#command').val(); 
         
         $.ajax({
-          type: 'POST', // Método HTTP (pode ser POST ou GET, dependendo do seu caso)
-          url: $(this).attr('action'), // URL para onde enviar os dados
+          type: 'POST', 
+          url: $(this).attr('action'), 
           data: { gCode: gCodeValue },
           success: function() {
              $('#command').val('');
@@ -615,16 +615,16 @@ $(document).ready(function() {
         });
       });
     });
-
+    // Send Temperature Extruder
     $(document).ready(function() {
       $('#setTempExForm').submit(function(e) {
-        e.preventDefault(); // Impede o envio padrão do formulário
+        e.preventDefault(); 
         
-        var setTempEx = $('#ref-input-ex').val(); // Obtém o valor do campo gCode
+        var setTempEx = $('#ref-input-ex').val();
 
         $.ajax({
-          type: 'POST', // Método HTTP (pode ser POST ou GET, dependendo do seu caso)
-          url: $(this).attr('action'), // URL para onde enviar os dados
+          type: 'POST',
+          url: $(this).attr('action'),
           data: { setTempEx: setTempEx },
           success: function() {
              $('#ref-input-ex').val('');
@@ -632,16 +632,16 @@ $(document).ready(function() {
         });
       });
     });
-
+    // Send Temperature Bed
     $(document).ready(function() {
         $('#setTempBedForm').submit(function(e) {
-        e.preventDefault(); // Impede o envio padrão do formulário
+        e.preventDefault();
         
-        var setTempBed = $('#ref-input-bed').val(); // Obtém o valor do campo gCode
+        var setTempBed = $('#ref-input-bed').val();
 
         $.ajax({
-          type: 'POST', // Método HTTP (pode ser POST ou GET, dependendo do seu caso)
-          url: $(this).attr('action'), // URL para onde enviar os dados
+          type: 'POST',
+          url: $(this).attr('action'),
           data: { setTempBed: setTempBed },
           success: function() {
              $('#ref-input-bed').val('');
@@ -649,7 +649,7 @@ $(document).ready(function() {
         });
       });
     });
-
+    // Stop streaming before close
     $(window).on('beforeunload', function() {
         $.ajax({
             url: '/stop-streaming',

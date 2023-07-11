@@ -467,13 +467,13 @@ window.addEventListener('DOMContentLoaded', create);
     // ALTERAÇÕES ============================================================================
     $(document).ready(function() {
           $('#fileUpload').submit(function(e) {
-            e.preventDefault(); // Impede o envio padrão do formulário
+            e.preventDefault(); 
             
             var file = new FormData(this);
             
             $.ajax({
-              type: 'POST', // Método HTTP (pode ser POST ou GET, dependendo do seu caso)
-              url: '/upload', // URL para onde enviar os dados
+              type: 'POST', 
+              url: '/upload', 
               data: file,
               processData: false,
               contentType: false,
@@ -519,7 +519,6 @@ window.addEventListener('DOMContentLoaded', create);
                 setTimeout(fazerRequisicaoGET, delay);
             });
           }
-          // Executar a função inicialmente
           fazerRequisicaoGET();
           setTimeout(function(){
             updateAllSliderValues();  
@@ -574,13 +573,13 @@ window.addEventListener('DOMContentLoaded', create);
     
         $(document).ready(function() {
           $('#gcodeForm').submit(function(e) {
-            e.preventDefault(); // Impede o envio padrão do formulário
+            e.preventDefault(); 
             
-            var gCodeValue = $('#command').val(); // Obtém o valor do campo gCode
+            var gCodeValue = $('#command').val(); 
             
             $.ajax({
-              type: 'POST', // Método HTTP (pode ser POST ou GET, dependendo do seu caso)
-              url: $(this).attr('action'), // URL para onde enviar os dados
+              type: 'POST', 
+              url: $(this).attr('action'), 
               data: { gCode: gCodeValue },
               success: function() {
                  $('#command').val('');
@@ -591,13 +590,13 @@ window.addEventListener('DOMContentLoaded', create);
     
         $(document).ready(function() {
           $('#setTempExForm').submit(function(e) {
-            e.preventDefault(); // Impede o envio padrão do formulário
+            e.preventDefault(); 
             
-            var setTempEx = $('#ref-input-ex').val(); // Obtém o valor do campo gCode
+            var setTempEx = $('#ref-input-ex').val(); 
     
             $.ajax({
-              type: 'POST', // Método HTTP (pode ser POST ou GET, dependendo do seu caso)
-              url: $(this).attr('action'), // URL para onde enviar os dados
+              type: 'POST', 
+              url: $(this).attr('action'), 
               data: { setTempEx: setTempEx },
               success: function() {
                  $('#ref-input-ex').val('');
@@ -608,13 +607,13 @@ window.addEventListener('DOMContentLoaded', create);
     
         $(document).ready(function() {
             $('#setTempBedForm').submit(function(e) {
-            e.preventDefault(); // Impede o envio padrão do formulário
+            e.preventDefault(); 
             
-            var setTempBed = $('#ref-input-bed').val(); // Obtém o valor do campo gCode
+            var setTempBed = $('#ref-input-bed').val(); 
     
             $.ajax({
-              type: 'POST', // Método HTTP (pode ser POST ou GET, dependendo do seu caso)
-              url: $(this).attr('action'), // URL para onde enviar os dados
+              type: 'POST', 
+              url: $(this).attr('action'), 
               data: { setTempBed: setTempBed },
               success: function() {
                  $('#ref-input-bed').val('');
