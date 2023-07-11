@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# TODO: check and fix everything
-# chmod controller scripts
-
 AP_SSID="MON3D"
 AP_PSWD="12345678"
 #AP_IP="10.42.0.1/24"
