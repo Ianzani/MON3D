@@ -76,7 +76,7 @@ Após o login irá aparecer uma tela com todos os seus dispositivos já registra
 
 Nesta tela você poderá *acessar todos os seus dispositivos* já registrados ou clicar no símbolo de "+" para *adicionar um novo dispositivo*. Ao adicionar um novo dispositivo, você poderá escolher um ícone e nome para o mesmo e deverá informar a ID (dada pela hash do endereço MAC da sua Raspberry Pi) e a taxa de transmissão utilizada, em bps.
 
-Quando você *acessar um dispositivo*, irá aparecer uma dashboard. Nesta tela deé possível verificar todas as informações da sua impressora (como temperatura, posição do cabeçote e vídeo da impressão).
+Quando você *acessar um dispositivo*, irá aparecer uma dashboard. Nesta tela dele é possível verificar todas as informações da sua impressora (como temperatura, posição do cabeçote e vídeo da impressão).
 
 Os menus da *esquerda* permitem que você monitore e controle a temperatura do cabeçote de impressão e da mesa aquecida.
 
