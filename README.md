@@ -70,7 +70,7 @@ Após instalar e configurar o sistema **MON3D** em sua placa Raspberry Pi, deve-
 
 ### Conectando sua placa à Internet:
 
-Para conectar sua placa RPi à Internet, basta conectar qualquer dispositivo à rede MON3D, a qual está sendo roteada pela RPi, utilizando a senha **1234** e acessar o endereço 10.42.0.1. Acessada a página, deve-se preencher os campos com o nome da sua rede WiFi e sua respectiva senha, seguindo as instruções apresentadas na página. Vale ressaltar que é de **extrema importância copiar o ID de sua Raspberry Pi**, pois este é o único momento em que você terá acesso à ele. Enviada as informações, basta observar se o LED presente em sua placa sairá do modo intermitente para o modo acesso sólido, indicando que a sua placa RPi foi conectada com sucesso em sua rede WiFi. Caso o LED volte ao modo intermitente, repita novamente o processo e, caso o problema persista, entre em contato com o nosso suporte técnico.
+Para conectar sua placa RPi à Internet, basta conectar qualquer dispositivo à rede MON3D, a qual está sendo roteada pela RPi, utilizando a senha **12345678** e acessar o endereço **10.42.0.1**. Acessada a página, deve-se preencher os campos com o nome da sua rede WiFi e sua respectiva senha, seguindo as instruções apresentadas na página. Vale ressaltar que é de **extrema importância copiar o ID de sua Raspberry Pi**, pois este é o único momento em que você terá acesso à ele. Enviada as informações, basta observar se o LED presente em sua placa sairá do modo intermitente para o modo acesso sólido, indicando que a sua placa RPi foi conectada com sucesso em sua rede WiFi. Caso o LED volte ao modo intermitente, repita novamente o processo e, caso o problema persista, entre em contato com o nosso suporte técnico.
 
 ### Criando sua conta:
 
@@ -80,22 +80,18 @@ Conectada a placa à Internet, é necessário a criação de uma conta em nosso 
 
 Possuindo uma conta MON3D, basta entrar no site utilizando suas credenciais e acessar a aba **DISPOSITIVOS**, caso não tenha sido redirecionado para ela. Como você não possui nenhum dispositivo cadastrado, a página apresentará apenas um botão para o cadastramento de um novo dispositivo. Assim, clique no botão e preencha as informações necessárias corretamente, prestando atenção ao ID da impressora, o qual foi apresentado ao conectar sua placa RPi à Internet, e à taxa de transmissão, a qual deve coincidir com a taxa de transmissão suportada por sua impressora. Caso o ID informado estiver correto, parabéns, você possui sua impressora cadastrada corretamente em nosso sistema, pronta para ser utilizada.
 
-**UTILIZAÇÃO**
+**NAVEGANDO PELA PLATAFORMA**
 
-Com o sistema configurado, você já pode começar a monitorar sua impressora remotamente!
+Acessado o site com sua conta MON3D, você terá acesso a todas as funções disponíveis para o controle de sua conta e de seus dispositivos.
 
-Para isso, você primeiro precisa acessar o [Website Mon3D](http://mon3d.igbt.eesc.usp.br/).
+### Acessando o painel de usuário:
 
-Se for a sua *primeira vez* utilizando o Mon3D, você primeiro clicar em [Registrar-se](http://mon3d.igbt.eesc.usp.br/signup), no canto superior direito. Senão, basta clicar em [Entrar](http://mon3d.igbt.eesc.usp.br/login) e informar seu e-mail de registro e senha.
+Caso deseja alterar o nome ou senha de sua conta, você poderá acessar o painel de usuário clicando no canto superior direito em seu nome de usuário. Além de poder alterar os dados de sua conta, você poderá também observar o endereço de email utilizado para o cadastro da mesma.
 
-Após o login irá aparecer uma tela com todos os seus dispositivos já registrados.
+### Acessando o painel da impressora:
 
-Nesta tela você poderá *acessar todos os seus dispositivos* já registrados ou clicar no símbolo de "+" para *adicionar um novo dispositivo*. Ao adicionar um novo dispositivo, você poderá escolher um ícone e nome para o mesmo e deverá informar a ID (dada pela hash do endereço MAC da sua Raspberry Pi) e a taxa de transmissão utilizada, em bps.
+Cadastrado um dispositivo, você poderá acessar o painel de controle do mesmo. Lá você encontrara um painel interativo dividido em 3 colunas principais. Na primeira coluna, você encontrará os botões responsáveis por conectar e desconctar o módulo à sua impressora, o status atual de sua impressora e um monitor de temperatura, o qual mostrará as temperaturas atuais de sua impressora, a referência de temperatura atual de sua impressora e duas caixas de definição de nova referência de temperatura.
 
-Quando você *acessar um dispositivo*, irá aparecer uma dashboard. Nesta tela dele é possível verificar todas as informações da sua impressora (como temperatura, posição do cabeçote e vídeo da impressão).
+Partindo para a segunda coluna, lá você encontrará os botões responsáveis por movimentar o cabeçote e a mesa de sua impressora, podendo também selecionar o passo desses movimentos; os botões de *homeing*, tanto o *homeing* de todos os eixos como para os eixos únicos; o botão de desenergizar os motores; e os botões de controle de impressão, sendo eles: Iniciar/Retomar, Pausar, Parar, Enviar Arquivo, Carregar Arquivo.
 
-Os menus da *esquerda* permitem que você monitore e controle a temperatura do cabeçote de impressão e da mesa aquecida.
-
-Os menus do *meio* permitem que você controle a posição do cabeçote em até 3 eixos, inicie ou pause uma impressão em andamento, além de permitir que você arquivos para impressão diretamente do seu dispositivo.
-
-O menu da *direita* permite a visualização de um vídeo ao vivo e das configurações da impressão.
+Já para a terceira coluna, você encontrará o monitoramento de vídeo de sua impressora e a aba de configuração de seu dispositivo. Nesta aba de configuração, você poderá alterar o nome dado ao seu dispositivo e a taxa de transmissão configurada no cadastramento de sua impressora. Ademais, você encontrará um botão de remoção de dispositivo, o qual descadastrará a sua impressora de sua conta e tornará possível o recadastro dela na mesma ou em outra conta. **Ressaltamos que é de suma importância anotar o ID de sua impressora, pois você não terá novamente acesso à ele**.
