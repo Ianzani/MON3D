@@ -65,6 +65,7 @@ cd ~/MON3D/hardware/rpi_setup/ && sudo chmod +x mon3d_setup.sh && sudo ./mon3d_s
 O sistema **MON3D** está instalado e pronto para uso. Na próxima vez que ligar sua placa Raspberry Pi ele será executado automaticamente. Fácil não? 😎
 
 **PRIMEIROS PASSOS**
+
 Após instalar e configurar o sistema **MON3D** em sua placa Raspberry Pi, deve-se seguir alguns passos iniciais para o cadastramento de sua impressora, sendo eles : Conectar sua placa à Internet, Criar uma conta no site [MON3D](http://mon3d.igbt.eesc.usp.br/), Cadastrar sua impressora
 
 ### Conectando sua placa à Internet:
