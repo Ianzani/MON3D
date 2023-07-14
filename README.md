@@ -1,4 +1,4 @@
-### MON3D
+# MON3D
 
 O **MON3D** é um sistema de monitoramento remoto com o objetivo de permitir o controle de impressoras 3D por meio da Internet. Ele consiste em uma interface usuário-impressora que possibilita ao usuário:
 
@@ -6,8 +6,9 @@ O **MON3D** é um sistema de monitoramento remoto com o objetivo de permitir o c
 * Movimentar os eixos e realizar o *homeing* dos mesmos;
 * Enviar arquivos e controlar a impressão dos mesmos;
 * Monitorar remotamento o funcionamento de sua impressora por meio de uma transmissão ao vivo de vídeo.
+<br>
 
-### INSTALAÇÃO
+## INSTALAÇÃO
 
 Bem-vindo ao tutorial de instalação e configuração do sistema **MON3D** para controle e monitoramento remoto de impressoras 3D.
 Antes de começar o processo, verifique a disponibilidade dos seguintes itens: 
@@ -55,7 +56,9 @@ cd ~/MON3D/hardware/rpi_setup/ && sudo chmod +x mon3d_setup.sh && sudo ./mon3d_s
 
 O sistema **MON3D** está instalado e pronto para uso. Na próxima vez que ligar sua placa Raspberry Pi ele será executado automaticamente. Fácil não? 😎
 
-### PRIMEIROS PASSOS
+<br>
+
+## PRIMEIROS PASSOS
 
 Após instalar e configurar o sistema **MON3D** em sua placa Raspberry Pi, deve-se seguir alguns passos iniciais para o cadastramento de sua impressora, sendo eles : Conectar sua placa à Internet, Criar uma conta no site [MON3D](http://mon3d.igbt.eesc.usp.br/), Cadastrar sua impressora.
 
@@ -71,7 +74,9 @@ Conectada a placa à Internet, é necessário a criação de uma conta em nosso 
 
 Possuindo uma conta MON3D, basta entrar no site utilizando suas credenciais e acessar a aba **DISPOSITIVOS**, caso não tenha sido redirecionado para ela. Como você não possui nenhum dispositivo cadastrado, a página apresentará apenas um botão para o cadastramento de um novo dispositivo. Assim, clique no botão e preencha as informações necessárias corretamente, prestando atenção ao ID da impressora, o qual foi apresentado ao conectar sua placa RPi à Internet, e à taxa de transmissão, a qual deve coincidir com a taxa de transmissão suportada por sua impressora. Caso o ID informado estiver correto, parabéns, você possui sua impressora cadastrada corretamente em nosso sistema, pronta para ser utilizada.
 
-### NAVEGANDO PELA PLATAFORMA
+<br>
+
+## NAVEGANDO PELA PLATAFORMA
 
 Acessado o site com sua conta MON3D, você terá acesso a todas as funções disponíveis para o controle de sua conta e de seus dispositivos.
 
@@ -87,7 +92,9 @@ Partindo para a segunda coluna, lá você encontrará os botões responsáveis p
 
 Já para a terceira coluna, você encontrará o monitoramento de vídeo de sua impressora e a aba de configuração de seu dispositivo. Nesta aba de configuração, você poderá alterar o nome dado ao seu dispositivo e a taxa de transmissão configurada no cadastramento de sua impressora. Ademais, você encontrará um botão de remoção de dispositivo, o qual descadastrará a sua impressora de sua conta e tornará possível o recadastro dela na mesma ou em outra conta. **Ressaltamos que é de suma importância anotar o ID de sua impressora, pois você não terá novamente acesso à ele**.
 
-### SOBRE O PROJETO
+<br>
+
+## SOBRE O PROJETO
 
 Este projeto baseou-se em dois principais núcleos, o da Raspberry Pi e o do servidor. No que tange o da Raspberry Pi, foi utilizado o sistema operacional Ubunto, devido à sua compatibilidade com as ferramentas do projeto, e foi utilizado a linguagem Python para a programação, devido a sua versatilidade. As principais ferramentas utilizadas neste núcleo foram: FFmpeg, responsável pelo envio do *streaming*; Firebase Admin SDK, bibliteca python utilizada para a comunicação da RPi com o servidor Firebase; e USART, comunicação serial utilizada entre a impressora e a placa RPi. Vale ressaltar que, para a automatização dos processos da RPi, foram criados códigos em *BASH*, permitindo, assim, o início dos códigos sem a necessidade de acessar a Raspberry Pi.
 
