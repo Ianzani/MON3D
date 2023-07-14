@@ -1,20 +1,11 @@
-# MON3D
-O **MON3D** é um sistema com o objetivo de permitir o monitoramento remoto de impressoras 3D. Ele consiste em uma interface usuário-impressora que não só possibilita ao usuário:
-* Enviar arquivos remotamente para a impressão diretamente a partir do seu celular ou computador;
-* Monitorar e controlar a temperatura do cabeçote de impressão e da mesa aquecida;
-* Monitorar e controlar a posição do cabeçote de impressão
-* Acessar um streaming de vídeo ao vivo da impressão.
+### MON3D
 
-A espinha dorsal do sistema consiste em:
-* Firebase: Armazenamento de dados a serem transmitidos da impressora ao usuário;
-* SQLite: Controle de usuário;
-* MediaMTX: Servidor utilizado para o streaming de vídeo;
-* Flask: Utilizado para definição de rotas e funções do website;
-* Debian: Sistema Operacional do servidor.
+O **MON3D** é um sistema de monitoramento remoto com o objetivo de permitir o controle de impressoras 3D por meio da Internet. Ele consiste em uma interface usuário-impressora que possibilita ao usuário:
 
-O diagrama do sistema a seguir apresenta uma ligação lógica entre todas as tecnologias utilizadas.
-
-![Diagrama do sistema](https://github.com/Ianzani/MON3D/blob/main/web/app/static/home/diagrama.png)
+* Monitorar e controlar a temperatura e o status de sua impressora;
+* Movimentar os eixos e realizar o *homeing* dos mesmos;
+* Enviar arquivos e controlar a impressão dos mesmos;
+* Monitorar remotamento o funcionamento de sua impressora por meio de uma transmissão ao vivo de vídeo.
 
 ### INSTALAÇÃO
 
