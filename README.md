@@ -105,5 +105,5 @@ Já para o núcleo do servidor, foi utilizado o servidor fornecido pela Universi
 Na imagem abaixo é possível observar a estrutura resumida do nosso projeto, a qual também está disponível em nosso site [MON3D](http://mon3d.igbt.eesc.usp.br/).
 
 <div align="center">
-  <img src="https://github.com/Ianzani/MON3D/blob/main/web/app/static/home/diagrama.png" width="400px"/>
+  <img src="https://github.com/Ianzani/MON3D/blob/main/web/app/static/home/diagrama.png" width="700px"/>
 </div>
