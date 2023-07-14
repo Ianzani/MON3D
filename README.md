@@ -3,7 +3,7 @@
 O **MON3D** é um sistema de monitoramento remoto com o objetivo de permitir o controle de impressoras 3D por meio da Internet. Ele consiste em uma interface usuário-impressora que possibilita ao usuário:
 
 * Monitorar e controlar a temperatura e o status de sua impressora;
-* Movimentar os eixos e realizar o *homeing* dos mesmos;
+* Movimentar os eixos e realizar o *homing* dos mesmos;
 * Enviar arquivos e controlar a impressão dos mesmos;
 * Monitorar remotamento o funcionamento de sua impressora por meio de uma transmissão ao vivo de vídeo.
 <br>
@@ -88,7 +88,7 @@ Caso deseja alterar o nome ou senha de sua conta, você poderá acessar o painel
 
 Cadastrado um dispositivo, você poderá acessar o painel de controle do mesmo. Lá você encontrara um painel interativo dividido em 3 colunas principais. Na primeira coluna, você encontrará os botões responsáveis por conectar e desconctar o módulo à sua impressora, o status atual de sua impressora e um monitor de temperatura, o qual mostrará as temperaturas atuais de sua impressora, a referência de temperatura atual de sua impressora e duas caixas de definição de nova referência de temperatura.
 
-Partindo para a segunda coluna, lá você encontrará os botões responsáveis por movimentar o cabeçote e a mesa de sua impressora, podendo também selecionar o passo desses movimentos; os botões de *homeing*, tanto o *homeing* de todos os eixos como para os eixos únicos; o botão de desenergizar os motores; e os botões de controle de impressão, sendo eles: Iniciar/Retomar, Pausar, Parar, Enviar Arquivo, Carregar Arquivo.
+Partindo para a segunda coluna, lá você encontrará os botões responsáveis por movimentar o cabeçote e a mesa de sua impressora, podendo também selecionar o passo desses movimentos; os botões de *homing*, tanto o *homing* de todos os eixos como para os eixos únicos; o botão de desenergizar os motores; e os botões de controle de impressão, sendo eles: Iniciar/Retomar, Pausar, Parar, Enviar Arquivo, Carregar Arquivo.
 
 Já para a terceira coluna, você encontrará o monitoramento de vídeo de sua impressora e a aba de configuração de seu dispositivo. Nesta aba de configuração, você poderá alterar o nome dado ao seu dispositivo e a taxa de transmissão configurada no cadastramento de sua impressora. Ademais, você encontrará um botão de remoção de dispositivo, o qual descadastrará a sua impressora de sua conta e tornará possível o recadastro dela na mesma ou em outra conta. **Ressaltamos que é de suma importância anotar o ID de sua impressora, pois você não terá novamente acesso à ele**.
 
