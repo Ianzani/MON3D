@@ -97,5 +97,5 @@ Na imagem abaixo é possível observar a estrutura resumida do nosso projeto, a 
 
 <br>
 <div align="center">
-  <img src="https://github.com/Ianzani/MON3D/blob/main/web/app/static/home/diagrama.png" width="700px"/>
+  <img src="https://github.com/Ianzani/MON3D/blob/main/web/app/static/home/diagrama2.png" width="700px"/>
 </div>
