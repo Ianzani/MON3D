@@ -66,7 +66,7 @@ O sistema **MON3D** está instalado e pronto para uso. Na próxima vez que ligar
 
 **PRIMEIROS PASSOS**
 
-Após instalar e configurar o sistema **MON3D** em sua placa Raspberry Pi, deve-se seguir alguns passos iniciais para o cadastramento de sua impressora, sendo eles : Conectar sua placa à Internet, Criar uma conta no site [MON3D](http://mon3d.igbt.eesc.usp.br/), Cadastrar sua impressora
+Após instalar e configurar o sistema **MON3D** em sua placa Raspberry Pi, deve-se seguir alguns passos iniciais para o cadastramento de sua impressora, sendo eles : Conectar sua placa à Internet, Criar uma conta no site [MON3D](http://mon3d.igbt.eesc.usp.br/), Cadastrar sua impressora.
 
 ### Conectando sua placa à Internet:
 
@@ -74,7 +74,7 @@ Para conectar sua placa RPi à Internet, basta conectar qualquer dispositivo à 
 
 ### Criando sua conta:
 
-Conectada a placa à Internet, é necessário a criação de uma conta em nosso site. Para isso, acesse o endereço [http://mon3d.igbt.eesc.usp.br/](http://mon3d.igbt.eesc.usp.br/) e resgistre uma nova conta no canto direito superior da página. Caso já possua uma conta MON3D, ignore este passso e prossiga para o próximo tópico.
+Conectada a placa à Internet, é necessário a criação de uma conta em nosso site. Para isso, acesse o endereço [http://mon3d.igbt.eesc.usp.br/](http://mon3d.igbt.eesc.usp.br/) e resgistre uma nova conta no canto superior direito da página. Caso já possua uma conta MON3D, ignore este passso e prossiga para o próximo tópico.
 
 ### Cadastrando sua impressora:
 
